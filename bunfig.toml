@@ -1,0 +1,14 @@
+# Bun configuration for react-architecture
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Use the lockfile for deterministic installs
+saveTextLockfile = true
+
+[install.cache]
+# Enable global cache for faster installs
+disable = false
+
+[run]
+# Silence lifecycle scripts output
+silent = false
