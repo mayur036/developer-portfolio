@@ -59,3 +59,25 @@ Pre-commit hooks (via Husky + lint-staged) automatically run on staged files:
 ESLint config is in `eslint.config.mjs` (flat config format, ESLint v9). Prettier config is in `.prettierrc` (single quotes, trailing commas, 80-char line width).
 
 Commitlint allows up to 1500-character headers (extended from default 100).
+
+## Coding Standard (SOP)
+
+This project follows the **Next.js Internal Coding Standard** defined in `Next.js - Internal Coding Standard.pdf` at the project root. Key rules enforced by agents:
+
+- **No `any`** — use `unknown`, generics, or proper types
+- **Layer separation**: Pages render containers, containers coordinate via hooks, UI components are pure (props-only, no API/store access)
+- **Naming**: PascalCase components, useCamelCase hooks, kebab-case files, UPPER_SNAKE_CASE constants
+- **Styling**: Tailwind CSS only, all colors via CSS variables, no inline styles, no hardcoded colors
+- **API layer**: Two files only — `services/client.ts` (HTTP client) + `services/api.ts` (endpoints)
+- **Server Components first** — `'use client'` only for interactivity
+- **No `console.log`/`console.error`** in production
+
+## Agents
+
+| Agent               | Purpose                                                              | Model  |
+| ------------------- | -------------------------------------------------------------------- | ------ |
+| `portfolio-builder` | Build/modify portfolio sections, layouts, animations                 | Opus   |
+| `code-reviewer`     | Review code against SOP — reports violations, does NOT fix           | Sonnet |
+| `sop-architect`     | Plan feature architecture (file trees, data flow, layer separation)  | Sonnet |
+| `feature-builder`   | Implement features following SOP with full quality gate              | Opus   |
+| `perf-auditor`      | Audit Server/Client components, bundle size, image/font optimization | Sonnet |
