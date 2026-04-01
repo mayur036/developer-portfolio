@@ -400,3 +400,12 @@ section {
   background: var(--accent);
   color: var(--accent-foreground);
 }
+
+/* ---- Custom cursor — hide default on non-touch devices ---- */
+@media (pointer: fine) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
