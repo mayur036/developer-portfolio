@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Priyank Khatri — Full Stack Developer',
+  title: 'Ronak Kapadi — Full Stack Developer',
   description:
     'Full Stack Developer building scalable, user-first applications. Explore my projects, experience, and technical skills.',
   keywords: [
