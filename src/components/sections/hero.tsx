@@ -2,116 +2,10 @@
 
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowDown, Download, FolderOpen, User } from 'lucide-react';
-import { useCallback, useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { useCallback } from 'react';
 
+import { InteractiveGrid } from '@/src/components/interactive-grid';
 import { HERO_STATS, PERSONAL } from '@/src/data/portfolio';
-
-function ParticleBackground() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const frameRef = useRef<number>(0);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      container.clientWidth / container.clientHeight,
-      0.1,
-      1000,
-    );
-    camera.position.z = 3;
-
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: false,
-    });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
-    const particleCount = 500;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const velocities = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 10;
-      positions[i + 1] = (Math.random() - 0.5) * 10;
-      positions[i + 2] = (Math.random() - 0.5) * 5;
-      velocities[i] = (Math.random() - 0.5) * 0.002;
-      velocities[i + 1] = (Math.random() - 0.5) * 0.002;
-      velocities[i + 2] = (Math.random() - 0.5) * 0.001;
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 0.015,
-      color: new THREE.Color('#60a5fa'),
-      transparent: true,
-      opacity: 0.5,
-      sizeAttenuation: true,
-    });
-
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    const animate = () => {
-      frameRef.current = requestAnimationFrame(animate);
-
-      const posArray = geometry.attributes.position
-        .array as unknown as Float32Array;
-      for (let i = 0; i < particleCount * 3; i += 3) {
-        posArray[i] += velocities[i];
-        posArray[i + 1] += velocities[i + 1];
-        posArray[i + 2] += velocities[i + 2];
-
-        if (Math.abs(posArray[i]) > 5) velocities[i] *= -1;
-        if (Math.abs(posArray[i + 1]) > 5) velocities[i + 1] *= -1;
-        if (Math.abs(posArray[i + 2]) > 2.5) velocities[i + 2] *= -1;
-      }
-      geometry.attributes.position.needsUpdate = true;
-
-      particles.rotation.y += 0.0002;
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    const handleResize = () => {
-      if (!container) return;
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(frameRef.current);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (container && renderer.domElement.parentNode === container) {
-        container.removeChild(renderer.domElement);
-      }
-    };
-  }, []);
-
-  return (
-    <div
-      ref={containerRef}
-      className="pointer-events-none absolute inset-0"
-      aria-hidden="true"
-    />
-  );
-}
 
 export function Hero() {
   const mouseX = useMotionValue(0);
@@ -151,10 +45,10 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="grid-bg relative flex min-h-screen items-center overflow-hidden"
+      className="relative flex min-h-screen items-center overflow-hidden"
       onMouseMove={handleMouseMove}
     >
-      <ParticleBackground />
+      <InteractiveGrid />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
         <motion.div

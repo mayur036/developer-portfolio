@@ -3,6 +3,7 @@ import { DM_Sans, JetBrains_Mono, Sora } from 'next/font/google';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { ThemeProvider } from '@/src/components/theme-provider';
+import { ClientCursor } from '@/src/components/client-cursor';
 import './globals.css';
 
 const sora = Sora({
@@ -47,6 +48,7 @@ export default function RootLayout({
         className={`${sora.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <ThemeProvider>
+          <ClientCursor />
           {children}
           <SpeedInsights />
         </ThemeProvider>
