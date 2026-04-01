@@ -24,6 +24,10 @@ export function Navbar() {
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
       setIsMobileOpen(false);
+      if (href === '#home') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
       const target = document.querySelector(href);
       target?.scrollIntoView({ behavior: 'smooth' });
     },
@@ -69,8 +73,14 @@ export function Navbar() {
             ))}
           </ul>
 
-          {/* Right side: theme toggle + mobile menu */}
-          <div className="flex items-center gap-2">
+          {/* Right side: availability + theme toggle + mobile menu */}
+          <div className="flex items-center gap-3">
+            {/* Availability indicator */}
+            <div className="hidden items-center gap-2 rounded-full border border-border-color bg-surface px-3 py-1.5 sm:flex">
+              <span className="status-dot size-2 rounded-full bg-green-500" />
+              <span className="text-xs font-medium text-body">Available</span>
+            </div>
+
             <ThemeToggle />
             <Button
               variant="ghost"
@@ -107,6 +117,14 @@ export function Navbar() {
               exit={{ x: 264 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             >
+              {/* Mobile availability */}
+              <div className="mb-4 flex items-center gap-2 rounded-full border border-border-color px-3 py-1.5">
+                <span className="status-dot size-2 rounded-full bg-green-500" />
+                <span className="text-xs font-medium text-body">
+                  Available for Work
+                </span>
+              </div>
+
               <ul className="flex flex-col gap-2">
                 {NAV_LINKS.map((link) => (
                   <li key={link.href}>

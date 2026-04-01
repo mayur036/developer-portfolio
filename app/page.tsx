@@ -1,12 +1,13 @@
 import { About } from '@/src/components/sections/about';
 import { Contact } from '@/src/components/sections/contact';
+import { Credentials } from '@/src/components/sections/credentials';
 import { Experience } from '@/src/components/sections/experience';
 import { Footer } from '@/src/components/sections/footer';
 import { Hero } from '@/src/components/sections/hero';
 import { Navbar } from '@/src/components/sections/navbar';
-import { Process } from '@/src/components/sections/process';
 import { Projects } from '@/src/components/sections/projects';
 import { Skills } from '@/src/components/sections/skills';
+import { BackToTop } from '@/src/components/back-to-top';
 
 export default function Home() {
   return (
@@ -18,10 +19,11 @@ export default function Home() {
         <Projects />
         <Experience />
         <Skills />
-        <Process />
+        <Credentials />
         <Contact />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

@@ -8,6 +8,7 @@ export interface Project {
   solution: string;
   impact: string;
   techStack: string[];
+  role: string;
   liveUrl?: string;
   githubUrl?: string;
   image?: string;
@@ -44,9 +45,28 @@ export interface SocialLink {
   label: string;
   url: string;
   icon: LucideIcon;
+  tagline?: string;
 }
 
 export interface NavLink {
   label: string;
   href: string;
+}
+
+export interface Credential {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  url?: string;
+}
+
+export interface Hobby {
+  name: string;
+  icon: LucideIcon;
+}
+
+export interface HeroStat {
+  label: string;
+  value: string;
 }

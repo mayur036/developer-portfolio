@@ -2,185 +2,131 @@
 
 import { motion } from 'framer-motion';
 import { ExternalLink, SquareTerminal } from 'lucide-react';
-import { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { SectionHeading } from '@/src/components/section-heading';
 import { PROJECTS } from '@/src/data/portfolio';
-import { buttonVariants } from '@/components/ui/button';
 
 export function Projects() {
   return (
     <section id="projects" className="py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
+          sectionNumber="003 — Work"
           title="Featured Projects"
           subtitle="A selection of problems I have enjoyed solving."
         />
 
-        <div className="grid gap-6 md:grid-cols-2">
+        {/* Project count */}
+        <motion.p
+          className="mb-8 font-mono text-xs text-muted-text"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          {PROJECTS.length} Total Projects
+        </motion.p>
+
+        <div className="space-y-8">
           {PROJECTS.map((project, index) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="glow-border rounded-xl"
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <Card className="h-full border-0 bg-surface ring-0">
-                {/* Thumbnail placeholder */}
-                <div className="mx-4 mt-4 h-40 rounded-lg bg-gradient-to-br from-accent/10 via-accent/5 to-transparent" />
+              <div className="card-hover-glow group grid overflow-hidden rounded-2xl border border-border-color bg-surface md:grid-cols-2">
+                {/* Left: Image / Mockup */}
+                <div className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-accent/5 via-accent-secondary/5 to-transparent p-8 md:p-12">
+                  <div className="relative w-full">
+                    {/* Mockup frame */}
+                    <div className="overflow-hidden rounded-lg border border-border-color bg-background shadow-2xl">
+                      {/* Browser chrome */}
+                      <div className="flex items-center gap-1.5 border-b border-border-color bg-surface px-3 py-2">
+                        <span className="size-2.5 rounded-full bg-red-400/60" />
+                        <span className="size-2.5 rounded-full bg-yellow-400/60" />
+                        <span className="size-2.5 rounded-full bg-green-400/60" />
+                        <span className="ml-2 flex-1 rounded-md bg-surface-alt px-3 py-0.5 text-[10px] text-muted-text">
+                          {project.liveUrl || 'localhost:3000'}
+                        </span>
+                      </div>
+                      {/* Content area */}
+                      <div className="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-accent/10 via-transparent to-accent-secondary/10 p-8">
+                        <div className="text-center">
+                          <p className="text-xl font-bold text-heading/60 sm:text-2xl">
+                            {project.title}
+                          </p>
+                          <p className="mt-1 text-xs text-muted-text">
+                            {project.role}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-                <CardHeader>
-                  <CardTitle className="font-heading text-lg text-heading">
+                {/* Right: Details */}
+                <div className="flex flex-col justify-center p-6 sm:p-8 md:p-10">
+                  {/* Role badge */}
+                  <span className="mb-3 inline-flex w-fit rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+                    {project.role}
+                  </span>
+
+                  {/* Title */}
+                  <h3 className="mb-3 font-heading text-xl font-bold text-heading sm:text-2xl">
                     {project.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed text-body">
-                    {project.description}
-                  </CardDescription>
-                </CardHeader>
+                  </h3>
 
-                <CardContent className="flex flex-col gap-4">
+                  {/* Description */}
+                  <p className="mb-6 text-sm leading-relaxed text-body">
+                    {project.description}
+                  </p>
+
                   {/* Tech stack */}
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="mb-6 flex flex-wrap gap-1.5">
                     {project.techStack.map((tech) => (
                       <Badge
                         key={tech}
                         variant="secondary"
-                        className="bg-accent/10 text-accent"
+                        className="border border-border-color bg-surface-alt text-xs text-body"
                       >
                         {tech}
                       </Badge>
                     ))}
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    <ProjectDetailDialog project={project} />
-
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={buttonVariants({
-                          variant: 'ghost',
-                          size: 'sm',
-                          className:
-                            'gap-1.5 text-muted-text hover:text-accent',
-                        })}
-                      >
-                        <SquareTerminal className="size-4" />
-                        Code
-                      </a>
-                    )}
-
+                  {/* Action buttons */}
+                  <div className="flex items-center gap-3">
                     {project.liveUrl && (
                       <a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={buttonVariants({
-                          variant: 'ghost',
-                          size: 'sm',
-                          className:
-                            'gap-1.5 text-muted-text hover:text-accent',
-                        })}
+                        className="gradient-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium"
                       >
-                        <ExternalLink className="size-4" />
-                        Live
+                        <ExternalLink className="size-3.5" />
+                        Open
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ghost-btn flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium"
+                      >
+                        <SquareTerminal className="size-3.5" />
+                        Source Code
                       </a>
                     )}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function ProjectDetailDialog({
-  project,
-}: {
-  project: (typeof PROJECTS)[number];
-}) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-1.5 border-accent/30 text-accent hover:bg-accent/10"
-          />
-        }
-      >
-        Details
-      </DialogTrigger>
-      <DialogContent className="max-w-lg border-border-color bg-surface">
-        <DialogHeader>
-          <DialogTitle className="font-heading text-xl text-heading">
-            {project.title}
-          </DialogTitle>
-          <DialogDescription className="text-body">
-            {project.description}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-4">
-          <div>
-            <h4 className="mb-1 text-sm font-semibold text-accent">Problem</h4>
-            <p className="text-sm leading-relaxed text-body">
-              {project.problem}
-            </p>
-          </div>
-          <div>
-            <h4 className="mb-1 text-sm font-semibold text-accent">Solution</h4>
-            <p className="text-sm leading-relaxed text-body">
-              {project.solution}
-            </p>
-          </div>
-          <div>
-            <h4 className="mb-1 text-sm font-semibold text-accent">Impact</h4>
-            <p className="text-sm leading-relaxed text-body">
-              {project.impact}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-1.5 pt-2">
-            {project.techStack.map((tech) => (
-              <Badge
-                key={tech}
-                variant="secondary"
-                className="bg-accent/10 text-accent"
-              >
-                {tech}
-              </Badge>
-            ))}
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
   );
 }

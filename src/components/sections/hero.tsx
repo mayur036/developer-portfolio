@@ -1,12 +1,11 @@
 'use client';
 
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowDown, Mail, FolderOpen } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { ArrowDown, Download, FolderOpen, User } from 'lucide-react';
+import { useCallback, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-import { Button } from '@/components/ui/button';
-import { PERSONAL } from '@/src/data/portfolio';
+import { HERO_STATS, PERSONAL } from '@/src/data/portfolio';
 
 function ParticleBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,16 +34,15 @@ function ParticleBackground() {
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // Create particles
-    const particleCount = 400;
+    const particleCount = 500;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
 
     for (let i = 0; i < particleCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 8;
-      positions[i + 1] = (Math.random() - 0.5) * 8;
-      positions[i + 2] = (Math.random() - 0.5) * 4;
+      positions[i] = (Math.random() - 0.5) * 10;
+      positions[i + 1] = (Math.random() - 0.5) * 10;
+      positions[i + 2] = (Math.random() - 0.5) * 5;
       velocities[i] = (Math.random() - 0.5) * 0.002;
       velocities[i + 1] = (Math.random() - 0.5) * 0.002;
       velocities[i + 2] = (Math.random() - 0.5) * 0.001;
@@ -53,10 +51,10 @@ function ParticleBackground() {
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.02,
-      color: new THREE.Color('#6ee7b7'),
+      size: 0.015,
+      color: new THREE.Color('#60a5fa'),
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.5,
       sizeAttenuation: true,
     });
 
@@ -73,14 +71,13 @@ function ParticleBackground() {
         posArray[i + 1] += velocities[i + 1];
         posArray[i + 2] += velocities[i + 2];
 
-        // Wrap around boundaries
-        if (Math.abs(posArray[i]) > 4) velocities[i] *= -1;
-        if (Math.abs(posArray[i + 1]) > 4) velocities[i + 1] *= -1;
-        if (Math.abs(posArray[i + 2]) > 2) velocities[i + 2] *= -1;
+        if (Math.abs(posArray[i]) > 5) velocities[i] *= -1;
+        if (Math.abs(posArray[i + 1]) > 5) velocities[i + 1] *= -1;
+        if (Math.abs(posArray[i + 2]) > 2.5) velocities[i + 2] *= -1;
       }
       geometry.attributes.position.needsUpdate = true;
 
-      particles.rotation.y += 0.0003;
+      particles.rotation.y += 0.0002;
       renderer.render(scene, camera);
     };
 
@@ -116,33 +113,6 @@ function ParticleBackground() {
   );
 }
 
-function TypewriterText({ text }: { text: string }) {
-  const [displayText, setDisplayText] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
-
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index <= text.length) {
-        setDisplayText(text.slice(0, index));
-        index++;
-      } else {
-        clearInterval(interval);
-        // Blink cursor a few times then hide
-        setTimeout(() => setShowCursor(false), 2000);
-      }
-    }, 40);
-    return () => clearInterval(interval);
-  }, [text]);
-
-  return (
-    <span>
-      {displayText}
-      {showCursor && <span className="animate-pulse text-accent">|</span>}
-    </span>
-  );
-}
-
 export function Hero() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -153,8 +123,8 @@ export function Hero() {
     (e: React.MouseEvent) => {
       const { clientX, clientY, currentTarget } = e;
       const { width, height } = currentTarget.getBoundingClientRect();
-      mouseX.set((clientX - width / 2) * 0.02);
-      mouseY.set((clientY - height / 2) * 0.02);
+      mouseX.set((clientX - width / 2) * 0.01);
+      mouseY.set((clientY - height / 2) * 0.01);
     },
     [mouseX, mouseY],
   );
@@ -163,7 +133,7 @@ export function Hero() {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.12,
         delayChildren: 0.3,
       },
     },
@@ -174,77 +144,115 @@ export function Hero() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: 'easeOut' as const },
+      transition: { duration: 0.6, ease: 'easeOut' as const },
     },
   };
 
   return (
     <section
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      id="home"
+      className="grid-bg relative flex min-h-screen items-center overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <ParticleBackground />
 
-      <motion.div
-        className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        style={{ x: springX, y: springY }}
-      >
-        <motion.p
-          variants={itemVariants}
-          className="mb-4 text-sm font-medium tracking-widest text-accent uppercase"
-        >
-          Hello, my name is
-        </motion.p>
-
-        <motion.h1
-          variants={itemVariants}
-          className="text-fluid-xl font-heading font-bold tracking-tight text-heading"
-        >
-          {PERSONAL.name}
-          <span className="text-accent">.</span>
-        </motion.h1>
-
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
         <motion.div
-          variants={itemVariants}
-          className="text-fluid-md mt-4 font-medium text-body sm:mt-6"
+          className="grid items-center gap-12 lg:grid-cols-2"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ x: springX, y: springY }}
         >
-          <TypewriterText text={PERSONAL.tagline} />
-        </motion.div>
+          {/* Left: Text */}
+          <div className="order-2 lg:order-1">
+            {/* Badge */}
+            <motion.div variants={itemVariants}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border-color bg-surface/60 px-4 py-1.5 text-xs font-medium text-body backdrop-blur-sm">
+                <span className="status-dot size-1.5 rounded-full bg-green-500" />
+                {PERSONAL.badge}
+              </span>
+            </motion.div>
 
-        <motion.div
-          variants={itemVariants}
-          className="mt-8 flex flex-col items-center justify-center gap-4 sm:mt-10 sm:flex-row"
-        >
-          <Button
-            size="lg"
-            className="gap-2 rounded-full bg-accent px-6 py-3 font-medium text-accent-foreground transition-all hover:bg-accent/90 hover:shadow-lg"
-            onClick={() =>
-              document
-                .querySelector('#projects')
-                ?.scrollIntoView({ behavior: 'smooth' })
-            }
+            {/* Name */}
+            <motion.h1
+              variants={itemVariants}
+              className="text-fluid-xl mt-6 font-heading font-bold tracking-tight text-heading"
+            >
+              {PERSONAL.name}
+              <span className="gradient-text">.</span>
+            </motion.h1>
+
+            {/* Tagline */}
+            <motion.p
+              variants={itemVariants}
+              className="mt-4 max-w-lg text-lg leading-relaxed text-body"
+            >
+              {PERSONAL.tagline}
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-8 flex flex-wrap gap-4"
+            >
+              <button
+                className="gradient-btn flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
+                onClick={() =>
+                  document
+                    .querySelector('#projects')
+                    ?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                <FolderOpen className="size-4" />
+                View Projects
+              </button>
+              <a
+                href={PERSONAL.resumeUrl}
+                className="ghost-btn flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
+              >
+                <Download className="size-4" />
+                View Resume
+              </a>
+            </motion.div>
+
+            {/* Stats Row */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-10 flex flex-wrap gap-6"
+            >
+              {HERO_STATS.map((stat, index) => (
+                <div key={stat.label} className="flex items-center gap-3">
+                  <span className="text-2xl font-bold text-heading">
+                    {stat.value}
+                  </span>
+                  <span className="text-sm text-muted-text">{stat.label}</span>
+                  {index < HERO_STATS.length - 1 && (
+                    <span className="ml-3 h-8 w-px bg-border-color" />
+                  )}
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Right: Profile Image */}
+          <motion.div
+            className="order-1 flex justify-center lg:order-2 lg:justify-end"
+            variants={itemVariants}
           >
-            <FolderOpen className="size-4" />
-            View Projects
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="gap-2 rounded-full border-border-color px-6 py-3 font-medium transition-all hover:border-accent hover:text-accent"
-            onClick={() =>
-              document
-                .querySelector('#contact')
-                ?.scrollIntoView({ behavior: 'smooth' })
-            }
-          >
-            <Mail className="size-4" />
-            Get in Touch
-          </Button>
+            <div className="relative">
+              {/* Gradient ring */}
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-accent via-accent-secondary to-accent opacity-60 blur-md" />
+              {/* Image container */}
+              <div className="relative size-56 overflow-hidden rounded-full border-2 border-border-color bg-surface sm:size-64 lg:size-72">
+                <div className="flex size-full items-center justify-center bg-gradient-to-br from-accent/20 via-accent-secondary/10 to-transparent">
+                  <User className="size-24 text-accent/40 sm:size-28 lg:size-32" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Scroll indicator */}
       <motion.div
