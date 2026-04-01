@@ -1,66 +1,117 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Download } from 'lucide-react';
+import { Send } from 'lucide-react';
 
-import { buttonVariants } from '@/components/ui/button';
 import { SectionHeading } from '@/src/components/section-heading';
-import { PERSONAL, SOCIAL_LINKS } from '@/src/data/portfolio';
+import { SOCIAL_LINKS } from '@/src/data/portfolio';
 
 export function Contact() {
   return (
     <section id="contact" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
+          sectionNumber="005 — Contact"
           title="Let's Build Something Together"
-          subtitle="I'm always open to discussing new projects, creative ideas, or opportunities to be part of something meaningful."
+          subtitle="I'm always open to discussing new projects, creative ideas, or opportunities."
         />
 
-        <motion.div
-          className="flex flex-col items-center gap-6"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          {/* Social links */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {SOCIAL_LINKS.map((link) => {
-              const LinkIcon = link.icon;
-              return (
-                <a
-                  key={link.label}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={buttonVariants({
-                    variant: 'outline',
-                    size: 'lg',
-                    className:
-                      'gap-2 rounded-full border-border-color px-5 text-body transition-all hover:border-accent hover:text-accent',
-                  })}
-                >
-                  <LinkIcon className="size-4" />
-                  {link.label}
-                </a>
-              );
-            })}
-          </div>
-
-          {/* Resume button */}
-          <a
-            href={PERSONAL.resumeUrl}
-            download
-            className={buttonVariants({
-              size: 'lg',
-              className:
-                'gap-2 rounded-full bg-accent px-6 font-medium text-accent-foreground transition-all hover:bg-accent/90 hover:shadow-lg',
-            })}
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Left: Contact Form */}
+          <motion.div
+            className="glow-border rounded-xl bg-surface p-6 sm:p-8"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
           >
-            <Download className="size-4" />
-            Download Resume
-          </a>
-        </motion.div>
+            <h3 className="mb-6 font-heading text-base font-semibold text-heading">
+              Send a Message
+            </h3>
+            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  className="form-input"
+                  id="contact-name"
+                />
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  className="form-input"
+                  id="contact-email"
+                />
+              </div>
+              <input
+                type="text"
+                placeholder="Subject"
+                className="form-input"
+                id="contact-subject"
+              />
+              <textarea
+                placeholder="Your Message"
+                rows={5}
+                className="form-input resize-none"
+                id="contact-message"
+              />
+              <button
+                type="submit"
+                className="gradient-btn flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
+              >
+                <Send className="size-4" />
+                Send Message
+              </button>
+            </form>
+          </motion.div>
+
+          {/* Right: Social Grid + Status */}
+          <motion.div
+            className="space-y-6"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            {/* Status card */}
+            <div className="flex items-center gap-3 rounded-xl border border-border-color bg-surface p-4">
+              <span className="status-dot size-2.5 rounded-full bg-green-500" />
+              <span className="text-sm font-medium text-heading">
+                Open to opportunities
+              </span>
+            </div>
+
+            {/* Social grid */}
+            <div className="grid gap-3 sm:grid-cols-2">
+              {SOCIAL_LINKS.map((link) => {
+                const LinkIcon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-card group flex items-center gap-4"
+                  >
+                    <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10 transition-colors group-hover:bg-accent/20">
+                      <LinkIcon className="size-5 text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-heading">
+                        {link.label}
+                      </p>
+                      {link.tagline && (
+                        <p className="text-xs text-muted-text">
+                          {link.tagline}
+                        </p>
+                      )}
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

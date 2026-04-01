@@ -1,19 +1,27 @@
 import {
+  Bike,
   Braces,
+  Camera,
+  Car,
   Cloud,
   Code2,
   Container,
+  Cpu,
   Database,
   Eye,
   FileCode2,
+  Gamepad2,
   GitBranch,
   Globe,
+  Image,
   Layout,
   Lightbulb,
   Link,
   Mail,
+  MessageCircle,
   Paintbrush,
   Palette,
+  Play,
   Rocket,
   Server,
   Settings,
@@ -22,7 +30,10 @@ import {
 } from 'lucide-react';
 
 import type {
+  Credential,
   Experience,
+  HeroStat,
+  Hobby,
   NavLink,
   ProcessStep,
   Project,
@@ -35,20 +46,51 @@ import type {
 export const PERSONAL = {
   name: 'Ronak Kapadi',
   role: 'Full Stack Developer',
-  tagline: 'Full Stack Developer building scalable, user-first applications',
+  badge: 'Full Stack Developer • Building Scalable Apps',
+  tagline:
+    'I build scalable, user-first web applications with clean architecture and modern technologies.',
   email: 'ronakkapadi22@gmail.com',
   resumeUrl: '#',
-  location: 'San Francisco, CA',
+  location: 'India',
 } as const;
+
+// ─── Hero Stats ─────────────────────────────────────────────
+
+export const HERO_STATS: HeroStat[] = [
+  { value: '2+', label: 'Years Experience' },
+  { value: '4+', label: 'Projects Built' },
+  { value: '10+', label: 'Technologies' },
+];
 
 // ─── Navigation ─────────────────────────────────────────────
 
 export const NAV_LINKS: NavLink[] = [
+  { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
+  { label: 'Work', href: '#projects' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Skills', href: '#skills' },
+  { label: 'Credentials', href: '#credentials' },
   { label: 'Contact', href: '#contact' },
+];
+
+// ─── Tech Marquee ───────────────────────────────────────────
+
+export const TECH_MARQUEE: string[] = [
+  'JavaScript',
+  'TypeScript',
+  'React',
+  'Next.js',
+  'Node.js',
+  'Python',
+  'PostgreSQL',
+  'MongoDB',
+  'Docker',
+  'AWS',
+  'Tailwind CSS',
+  'Git',
+  'Redis',
+  'GraphQL',
+  'Figma',
 ];
 
 // ─── Projects ───────────────────────────────────────────────
@@ -57,6 +99,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'cloudflow',
     title: 'CloudFlow Analytics',
+    role: 'Personal Project',
     description:
       'A real-time analytics dashboard that processes millions of events per day, providing actionable insights through interactive visualizations and automated alerting.',
     problem:
@@ -80,6 +123,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'devhub',
     title: 'DevHub Marketplace',
+    role: 'Professional Project',
     description:
       'A developer tool marketplace where teams discover, review, and integrate internal APIs and microservices through a self-service portal.',
     problem:
@@ -103,6 +147,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'deploymate',
     title: 'DeployMate CLI',
+    role: 'Open Source',
     description:
       'An open-source CLI tool that automates deployment workflows, environment provisioning, and rollback strategies for containerized applications.',
     problem:
@@ -234,23 +279,94 @@ export const PROCESS_STEPS: ProcessStep[] = [
   },
 ];
 
+// ─── Credentials ────────────────────────────────────────────
+
+export const CREDENTIALS: Credential[] = [
+  {
+    id: 'cred-1',
+    title: 'Meta Front-End Developer Professional Certificate',
+    issuer: 'Meta (Coursera)',
+    date: 'Aug 2024',
+    url: '#',
+  },
+  {
+    id: 'cred-2',
+    title: 'AWS Certified Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    date: 'May 2024',
+    url: '#',
+  },
+  {
+    id: 'cred-3',
+    title: 'Full Stack Open — Deep Dive into Modern Web Dev',
+    issuer: 'University of Helsinki',
+    date: 'Mar 2024',
+    url: '#',
+  },
+  {
+    id: 'cred-4',
+    title: 'HackVerse 2024 — 2nd Place',
+    issuer: 'HackVerse Hackathon',
+    date: 'Jan 2024',
+    url: '#',
+  },
+  {
+    id: 'cred-5',
+    title: 'JavaScript Algorithms & Data Structures',
+    issuer: 'freeCodeCamp',
+    date: 'Nov 2023',
+    url: '#',
+  },
+];
+
+// ─── Hobbies (Beyond Code) ─────────────────────────────────
+
+export const HOBBIES: Hobby[] = [
+  { name: 'Gaming', icon: Gamepad2 },
+  { name: 'Photography', icon: Camera },
+  { name: 'Cycling', icon: Bike },
+  { name: 'Cars', icon: Car },
+  { name: 'Tech Tinkering', icon: Cpu },
+];
+
 // ─── Social Links ───────────────────────────────────────────
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
     label: 'Email',
-    url: 'mailto:priyank@example.com',
+    url: 'mailto:ronakkapadi22@gmail.com',
     icon: Mail,
+    tagline: 'Get in Touch',
   },
   {
     label: 'GitHub',
     url: 'https://github.com',
     icon: SquareTerminal,
+    tagline: 'Open Source Work',
   },
   {
     label: 'LinkedIn',
     url: 'https://linkedin.com',
     icon: Link,
+    tagline: 'Professional Profile',
+  },
+  {
+    label: 'YouTube',
+    url: 'https://youtube.com',
+    icon: Play,
+    tagline: 'Tech Content',
+  },
+  {
+    label: 'Instagram',
+    url: 'https://instagram.com',
+    icon: Image,
+    tagline: 'Life Updates',
+  },
+  {
+    label: 'X (Twitter)',
+    url: 'https://x.com',
+    icon: MessageCircle,
+    tagline: 'Thoughts & Ideas',
   },
 ];
 
@@ -258,6 +374,8 @@ export const SOCIAL_LINKS: SocialLink[] = [
 
 export const ABOUT = {
   bio: "I'm a full stack developer with a passion for building products that solve real problems. I specialize in creating performant web applications with clean architecture, intuitive user experiences, and systems that scale.",
+  journey:
+    'Currently working as a Full Stack Developer, I have been building production-grade applications for over 2 years. My journey started with curiosity about how the web works and has evolved into a deep passion for crafting digital experiences.',
   highlights: [
     'Led engineering teams of 5+ developers',
     '2M+ daily active users served',

@@ -28,6 +28,7 @@ export function Skills() {
     <section id="skills" className="py-20 sm:py-28">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeading
+          sectionNumber="003.7 — Skills"
           title="Skills & Tools"
           subtitle="Technologies I work with daily to build reliable, scalable software."
         />
@@ -45,7 +46,7 @@ export function Skills() {
               <motion.div
                 key={category.title}
                 variants={itemVariants}
-                className="glow-border rounded-xl bg-surface p-6"
+                className="card-hover-glow rounded-xl border border-border-color bg-surface p-6"
               >
                 <div className="mb-4 flex items-center gap-3">
                   <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10">

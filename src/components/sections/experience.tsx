@@ -8,16 +8,17 @@ import { EXPERIENCE } from '@/src/data/portfolio';
 
 export function Experience() {
   return (
-    <section id="experience" className="bg-surface-alt py-20 sm:py-28">
+    <section id="experience" className="bg-surface-alt/50 py-20 sm:py-28">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <SectionHeading
-          title="Experience"
-          subtitle="Where I have been and the impact I have made."
+          sectionNumber="003.5 — Experience"
+          title="Where I've Been"
+          subtitle="The teams and challenges that shaped my approach to building software."
         />
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute top-0 left-4 h-full w-px bg-accent/20 md:left-1/2 md:-translate-x-px" />
+          <div className="absolute top-0 left-4 h-full w-px bg-gradient-to-b from-accent via-accent-secondary to-transparent md:left-1/2 md:-translate-x-px" />
 
           {EXPERIENCE.map((exp, index) => {
             const isLeft = index % 2 === 0;
@@ -39,15 +40,15 @@ export function Experience() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 {/* Timeline dot */}
-                <div className="absolute top-2 left-4 z-10 size-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background md:left-1/2" />
+                <div className="absolute top-2 left-4 z-10 size-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_var(--accent-glow)] md:left-1/2" />
 
                 {/* Content card */}
-                <div className="glow-border ml-10 w-full rounded-xl bg-surface p-6 md:ml-0">
+                <div className="card-hover-glow ml-10 w-full rounded-xl border border-border-color bg-surface p-6 md:ml-0">
                   <div className="mb-1 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                     <h3 className="font-heading text-base font-semibold text-heading">
                       {exp.role}
                     </h3>
-                    <span className="text-xs font-medium text-accent">
+                    <span className="font-mono text-xs text-accent">
                       {exp.startDate} &mdash; {exp.endDate}
                     </span>
                   </div>
@@ -72,7 +73,7 @@ export function Experience() {
                       <Badge
                         key={tag}
                         variant="secondary"
-                        className="bg-accent/10 text-xs text-accent"
+                        className="border border-border-color bg-surface-alt text-xs text-body"
                       >
                         {tag}
                       </Badge>
