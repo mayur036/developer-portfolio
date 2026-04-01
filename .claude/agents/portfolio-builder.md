@@ -133,7 +133,7 @@ Build a complete, production-ready developer portfolio as a single-page React ap
 
 ## PLACEHOLDER DATA
 
-- Name: "Priyank Khatri"
+- Name: "Ronak Kapadi"
 - Role: "Full Stack Developer"
 - 3 projects with realistic names, problems, solutions, tech stacks
 - 2 experience entries with impact-driven descriptions

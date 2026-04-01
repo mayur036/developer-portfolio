@@ -33,10 +33,10 @@ import type {
 // ─── Personal Info ──────────────────────────────────────────
 
 export const PERSONAL = {
-  name: 'Priyank Khatri',
+  name: 'Ronak Kapadi',
   role: 'Full Stack Developer',
   tagline: 'Full Stack Developer building scalable, user-first applications',
-  email: 'priyank@example.com',
+  email: 'ronakkapadi22@gmail.com',
   resumeUrl: '#',
   location: 'San Francisco, CA',
 } as const;
