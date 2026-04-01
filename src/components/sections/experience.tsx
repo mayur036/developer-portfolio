@@ -1,0 +1,89 @@
+'use client';
+
+import { motion } from 'framer-motion';
+
+import { Badge } from '@/components/ui/badge';
+import { SectionHeading } from '@/src/components/section-heading';
+import { EXPERIENCE } from '@/src/data/portfolio';
+
+export function Experience() {
+  return (
+    <section id="experience" className="bg-surface-alt py-20 sm:py-28">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+        <SectionHeading
+          title="Experience"
+          subtitle="Where I have been and the impact I have made."
+        />
+
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="absolute top-0 left-4 h-full w-px bg-accent/20 md:left-1/2 md:-translate-x-px" />
+
+          {EXPERIENCE.map((exp, index) => {
+            const isLeft = index % 2 === 0;
+
+            return (
+              <motion.div
+                key={exp.id}
+                className={`relative mb-12 flex last:mb-0 ${
+                  isLeft
+                    ? 'md:justify-start md:pr-[calc(50%+2rem)]'
+                    : 'md:justify-end md:pl-[calc(50%+2rem)]'
+                }`}
+                initial={{
+                  opacity: 0,
+                  x: isLeft ? -40 : 40,
+                }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                {/* Timeline dot */}
+                <div className="absolute top-2 left-4 z-10 size-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background md:left-1/2" />
+
+                {/* Content card */}
+                <div className="glow-border ml-10 w-full rounded-xl bg-surface p-6 md:ml-0">
+                  <div className="mb-1 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <h3 className="font-heading text-base font-semibold text-heading">
+                      {exp.role}
+                    </h3>
+                    <span className="text-xs font-medium text-accent">
+                      {exp.startDate} &mdash; {exp.endDate}
+                    </span>
+                  </div>
+                  <p className="mb-3 text-sm font-medium text-muted-text">
+                    {exp.company}
+                  </p>
+
+                  <ul className="mb-4 space-y-2">
+                    {exp.bullets.map((bullet, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-2 text-sm leading-relaxed text-body"
+                      >
+                        <span className="mt-2 size-1 shrink-0 rounded-full bg-accent" />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="flex flex-wrap gap-1.5">
+                    {exp.techTags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="secondary"
+                        className="bg-accent/10 text-xs text-accent"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
