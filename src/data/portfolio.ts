@@ -33,6 +33,7 @@ import type {
   NavLink,
   ProcessStep,
   Project,
+  Skill,
   SkillCategory,
   SocialLink,
 } from '@/src/types/portfolio';
@@ -75,22 +76,22 @@ export const NAV_LINKS: NavLink[] = [
 
 // ─── Tech Marquee ───────────────────────────────────────────
 
-export const TECH_MARQUEE: string[] = [
-  'JavaScript',
-  'TypeScript',
-  'React',
-  'Next.js',
-  'Node.js',
-  'Antigravity',
-  'Claude AI',
-  'Github Co-pilot',
-  'PostgreSQL',
-  'MongoDB',
-  'AWS',
-  'Tailwind CSS',
-  'Shadcn UI',
-  'Framer Motion',
-  'GraphQL',
+export const TECH_MARQUEE: Skill[] = [
+  { name: 'JavaScript', icon: Code2 },
+  { name: 'TypeScript', icon: FileCode2 },
+  { name: 'React', icon: Braces },
+  { name: 'Next.js', icon: Globe },
+  { name: 'Node.js', icon: Server },
+  { name: 'Antigravity', icon: Rocket },
+  { name: 'Claude AI', icon: Lightbulb },
+  { name: 'Github Co-pilot', icon: SquareTerminal },
+  { name: 'PostgreSQL', icon: Database },
+  { name: 'MongoDB', icon: Database },
+  { name: 'AWS', icon: Cloud },
+  { name: 'Tailwind CSS', icon: Palette },
+  { name: 'Shadcn UI', icon: Paintbrush },
+  { name: 'Framer Motion', icon: Cpu },
+  { name: 'GraphQL', icon: GitBranch },
 ];
 
 // ─── Projects ───────────────────────────────────────────────
