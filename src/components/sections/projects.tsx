@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { motion } from 'framer-motion';
 import { ExternalLink, SquareTerminal } from 'lucide-react';
 
@@ -38,7 +40,7 @@ export function Projects() {
             >
               <div className="card-hover-glow group grid overflow-hidden rounded-2xl border border-border-color bg-surface md:grid-cols-2">
                 {/* Left: Image / Mockup */}
-                <div className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-accent/5 via-accent-secondary/5 to-transparent p-8 md:p-12">
+                <div className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-accent/5 via-accent/3 to-transparent p-8 md:p-12">
                   <div className="relative w-full">
                     {/* Mockup frame */}
                     <div className="overflow-hidden rounded-lg border border-border-color bg-background shadow-2xl">
@@ -52,7 +54,7 @@ export function Projects() {
                         </span>
                       </div>
                       {/* Content area */}
-                      <div className="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-accent/10 via-transparent to-accent-secondary/10 p-8">
+                      <div className="flex aspect-[16/10] items-center justify-center bg-gradient-to-br from-accent/10 via-transparent to-accent/5 p-8">
                         <div className="text-center">
                           <p className="text-xl font-bold text-heading/60 sm:text-2xl">
                             {project.title}

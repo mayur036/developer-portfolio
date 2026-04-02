@@ -28,35 +28,48 @@ export function Contact() {
             <h3 className="mb-6 font-heading text-base font-semibold text-heading">
               Send a Message
             </h3>
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="space-y-4"
+              id="contact-form"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <div className="grid gap-4 sm:grid-cols-2">
                 <input
                   type="text"
+                  name="user_name"
                   placeholder="Your Name"
                   className="form-input"
-                  id="contact-name"
+                  id="form-input-name"
+                  required
                 />
                 <input
                   type="email"
+                  name="user_email"
                   placeholder="Your Email"
                   className="form-input"
-                  id="contact-email"
+                  id="form-input-email"
+                  required
                 />
               </div>
               <input
                 type="text"
+                name="subject"
                 placeholder="Subject"
                 className="form-input"
-                id="contact-subject"
+                id="form-input-subject"
+                required
               />
               <textarea
+                name="message"
                 placeholder="Your Message"
                 rows={5}
                 className="form-input resize-none"
-                id="contact-message"
+                id="form-input-message"
+                required
               />
               <button
                 type="submit"
+                id="cta-contact-submit"
                 className="gradient-btn flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
               >
                 <Send className="size-4" />

@@ -9,9 +9,12 @@ import { Projects } from '@/src/components/sections/projects';
 import { Skills } from '@/src/components/sections/skills';
 import { BackToTop } from '@/src/components/back-to-top';
 
+import { InteractiveGrid } from '@/src/components/interactive-grid';
+
 export default function Home() {
   return (
     <>
+      <InteractiveGrid />
       <Navbar />
       <main>
         <Hero />

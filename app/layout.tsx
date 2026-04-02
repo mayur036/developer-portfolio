@@ -25,15 +25,20 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Ronak Kapadi — Full Stack Developer',
+  title: 'Ronak Kapadi — Software Developer | AI Business Solutions',
   description:
-    'Full Stack Developer building scalable, user-first applications. Explore my projects, experience, and technical skills.',
+    'Software Developer with 5+ years of experience specialized in building AI-driven business solutions and scalable web applications. Explore my projects, experience, and technical skills.',
   keywords: [
-    'Full Stack Developer',
+    'Software Developer',
+    'AI Solutions',
+    'Business Software',
+    'Next.js 19',
     'React',
-    'Next.js',
     'TypeScript',
-    'Portfolio',
+    'Lead Technology Architect',
+    'Software Architect',
+    'Ronak Kapadi',
+    'Claude AI',
   ],
 };
 

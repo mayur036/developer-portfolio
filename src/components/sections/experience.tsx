@@ -18,7 +18,7 @@ export function Experience() {
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute top-0 left-4 h-full w-px bg-gradient-to-b from-accent via-accent-secondary to-transparent md:left-1/2 md:-translate-x-px" />
+          <div className="absolute top-0 left-4 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent md:left-1/2 md:-translate-x-px" />
 
           {EXPERIENCE.map((exp, index) => {
             const isLeft = index % 2 === 0;
