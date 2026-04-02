@@ -33,6 +33,7 @@ export function Hero() {
           {/* CTA Buttons */}
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <button
+              id="cta-hero-projects"
               className="gradient-btn flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold sm:px-10"
               onClick={() =>
                 document
@@ -45,6 +46,7 @@ export function Hero() {
             </button>
             <a
               href={PERSONAL.resumeUrl}
+              id="cta-hero-resume"
               className="ghost-btn flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold sm:px-10"
             >
               <Download className="size-4" />

@@ -48,6 +48,7 @@ export function Navbar() {
           {/* Logo */}
           <a
             href="#"
+            id="nav-logo"
             className="font-heading text-lg font-bold text-heading transition-colors hover:text-accent"
             onClick={(e) => {
               e.preventDefault();
@@ -64,6 +65,7 @@ export function Navbar() {
               <li key={link.href}>
                 <a
                   href={link.href}
+                  id={`nav-item-${link.href.replace('#', '')}`}
                   onClick={(e) => handleNavClick(e, link.href)}
                   className="rounded-lg px-3 py-2 text-sm font-medium text-body transition-colors hover:bg-accent/10 hover:text-accent"
                 >
@@ -86,7 +88,7 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               className="md:hidden"
-              aria-label="Toggle menu"
+              aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
               onClick={() => setIsMobileOpen(!isMobileOpen)}
             >
               {isMobileOpen ? (
@@ -130,6 +132,7 @@ export function Navbar() {
                   <li key={link.href}>
                     <a
                       href={link.href}
+                      id={`nav-item-mobile-${link.href.replace('#', '')}`}
                       onClick={(e) => handleNavClick(e, link.href)}
                       className="block rounded-lg px-4 py-3 text-sm font-medium text-body transition-colors hover:bg-accent/10 hover:text-accent"
                     >

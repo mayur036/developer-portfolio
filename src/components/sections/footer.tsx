@@ -26,6 +26,7 @@ export function Footer() {
             return (
               <a
                 key={link.label}
+                id={`footer-social-${link.label.toLowerCase().replace(' ', '-')}`}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
