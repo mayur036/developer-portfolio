@@ -6,11 +6,13 @@ import { CheckCircle2, GraduationCap } from 'lucide-react';
 import { SectionHeading } from '@/src/components/section-heading';
 import {
   ABOUT,
+  HERO_STATS,
   HOBBIES,
   PERSONAL,
   SKILLS,
   TECH_MARQUEE,
 } from '@/src/data/portfolio';
+import type { HeroStat } from '@/src/types/portfolio';
 
 function TechMarquee() {
   const items = [...TECH_MARQUEE, ...TECH_MARQUEE];
@@ -108,9 +110,14 @@ export function About() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-heading">
-                    Full Stack Developer
+                    {PERSONAL.role}
                   </p>
-                  <p className="text-xs text-muted-text">2+ Years Active</p>
+                  <p className="text-xs text-muted-text">
+                    {HERO_STATS.find((s: HeroStat) =>
+                      s.label.includes('Experience'),
+                    )?.value || '5+'}{' '}
+                    Years Active
+                  </p>
                 </div>
               </div>
             </div>
