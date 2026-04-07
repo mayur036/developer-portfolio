@@ -88,9 +88,9 @@ locales/**/*.bak
 .react-query-devtools/
 
 ############################################
-# Claude Code (symlink to .agents/skills/)
+# Agent Skills (symlink to .claude/skills/)
 ############################################
-.claude/skills
+.agents/skills
 
 ############################################
 # Misc
