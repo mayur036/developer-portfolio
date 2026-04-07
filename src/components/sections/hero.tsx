@@ -128,9 +128,13 @@ export function Hero() {
               <motion.div
                 key={stat.label}
                 className="flex flex-col items-center gap-2"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8 + i * 0.1 }}
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{
+                  delay: 0.8 + i * 0.15,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+                }}
               >
                 <span className="text-3xl font-bold text-heading sm:text-4xl">
                   {stat.value}

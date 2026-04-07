@@ -16,12 +16,21 @@ export function Skills() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4 },
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      },
     },
+  };
+
+  const cardHover = {
+    y: -5,
+    scale: 1.01,
+    transition: { duration: 0.3, ease: 'easeOut' as const },
   };
 
   return (
@@ -46,6 +55,7 @@ export function Skills() {
               <motion.div
                 key={category.title}
                 variants={itemVariants}
+                whileHover={cardHover}
                 className="card-hover-glow rounded-xl border border-border-color bg-surface p-6"
               >
                 <div className="mb-4 flex items-center gap-3">
@@ -61,13 +71,15 @@ export function Skills() {
                   {category.skills.map((skill) => {
                     const SkillIcon = skill.icon;
                     return (
-                      <div
+                      <motion.div
                         key={skill.name}
                         className="flex items-center gap-2 rounded-lg bg-surface-alt px-3 py-2 text-sm text-body transition-colors hover:text-accent"
+                        whileHover={{ scale: 1.03, x: 2 }}
+                        transition={{ duration: 0.2 }}
                       >
                         <SkillIcon className="size-4 shrink-0 text-accent/70" />
                         {skill.name}
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>

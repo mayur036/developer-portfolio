@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { motion } from 'framer-motion';
 import { ExternalLink, SquareTerminal } from 'lucide-react';
 
@@ -40,6 +38,10 @@ export function Projects() {
                 duration: 0.8,
                 delay: index * 0.1,
                 ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+              }}
+              whileHover={{
+                y: -4,
+                transition: { duration: 0.3, ease: 'easeOut' },
               }}
             >
               <div className="card-hover-glow group grid overflow-hidden rounded-2xl border border-border-color bg-surface md:grid-cols-2">

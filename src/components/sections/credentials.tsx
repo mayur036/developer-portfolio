@@ -21,7 +21,10 @@ export function Credentials() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+          }}
         >
           <div className="credential-carousel">
             {CREDENTIALS.map((cred, index) => (
@@ -31,7 +34,16 @@ export function Credentials() {
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+                }}
+                whileHover={{
+                  y: -5,
+                  scale: 1.02,
+                  transition: { duration: 0.3, ease: 'easeOut' },
+                }}
               >
                 <div className="mb-4 flex items-start justify-between">
                   <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10">

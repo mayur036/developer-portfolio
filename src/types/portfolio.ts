@@ -66,6 +66,14 @@ export interface Hobby {
   icon: LucideIcon;
 }
 
+export interface Service {
+  id: string;
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  highlights: string[];
+}
+
 export interface HeroStat {
   label: string;
   value: string;
