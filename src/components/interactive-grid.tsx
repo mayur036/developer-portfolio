@@ -60,6 +60,9 @@ function Particles() {
 
   const pointsRef = useRef<THREE.Points>(null);
 
+  // Smoothed mouse position to avoid jerky particle reactions
+  const smoothMouse = useRef(new THREE.Vector2(0, 0));
+
   useFrame((state) => {
     if (!pointsRef.current) return;
     const { clock } = state;
@@ -67,37 +70,61 @@ function Particles() {
     const posArray = pointsRef.current.geometry.attributes.position
       .array as Float32Array;
 
-    // Convert 2D mouse [-1, 1] to a rough 3D area
-    const mouseX = mouse.x * viewport.width * 4;
-    const mouseY = mouse.y * viewport.height * 4;
+    // Smooth the mouse position for fluid interaction
+    const targetMouseX = mouse.x * viewport.width * 4;
+    const targetMouseY = mouse.y * viewport.height * 4;
+    smoothMouse.current.x += (targetMouseX - smoothMouse.current.x) * 0.08;
+    smoothMouse.current.y += (targetMouseY - smoothMouse.current.y) * 0.08;
+    const mouseX = smoothMouse.current.x;
+    const mouseY = smoothMouse.current.y;
 
     for (let i = 0; i < particleCount; i++) {
       const i3 = i * 3;
+      const phase = phases[i];
 
-      // Basic floating motion
-      posArray[i3] += velocities[i3] + Math.sin(time + phases[i]) * 0.002;
+      // Organic floating motion with varied frequencies per axis
+      posArray[i3] += velocities[i3] + Math.sin(time * 0.6 + phase) * 0.004;
       posArray[i3 + 1] +=
-        velocities[i3 + 1] + Math.cos(time + phases[i]) * 0.002;
-      posArray[i3 + 2] += velocities[i3 + 2];
+        velocities[i3 + 1] + Math.cos(time * 0.5 + phase * 1.3) * 0.004;
+      posArray[i3 + 2] +=
+        velocities[i3 + 2] + Math.sin(time * 0.4 + phase * 0.7) * 0.002;
 
-      // Interaction: Repulsion from mouse
+      // Smooth mouse interaction with Gaussian-like falloff
       const dx = posArray[i3] - mouseX;
       const dy = posArray[i3 + 1] - mouseY;
       const distSq = dx * dx + dy * dy;
+      const influence = Math.exp(-distSq / 80); // soft Gaussian falloff
+      const force = influence * 0.15;
+      posArray[i3] += dx * force;
+      posArray[i3 + 1] += dy * force;
 
-      if (distSq < 100) {
-        const dist = Math.sqrt(distSq);
-        const force = (10 - dist) * 0.02;
-        posArray[i3] += (dx / dist) * force;
-        posArray[i3 + 1] += (dy / dist) * force;
+      // Soft boundary: exponential drag that gently pulls particles back
+      const bx = posArray[i3];
+      const by = posArray[i3 + 1];
+      const bz = posArray[i3 + 2];
+      const boundX = 25,
+        boundY = 20,
+        boundYMin = -6,
+        boundZ = 20;
+
+      if (Math.abs(bx) > boundX * 0.8) {
+        posArray[i3] -= bx * 0.01 * (Math.abs(bx) / boundX);
       }
-
-      // Bounding box reset
-      if (Math.abs(posArray[i3]) > 25) posArray[i3] *= -0.9;
-      if (posArray[i3 + 1] > 20 || posArray[i3 + 1] < -6) posArray[i3 + 1] = 20;
-      if (Math.abs(posArray[i3 + 2]) > 20) posArray[i3 + 2] *= -0.9;
+      if (by > boundY * 0.8) {
+        posArray[i3 + 1] -= (by - boundY * 0.5) * 0.008;
+      } else if (by < boundYMin * 0.8) {
+        posArray[i3 + 1] += (boundYMin * 0.5 - by) * 0.008;
+      }
+      if (Math.abs(bz) > boundZ * 0.8) {
+        posArray[i3 + 2] -= bz * 0.01 * (Math.abs(bz) / boundZ);
+      }
     }
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
+
+    // Gentle size breathing
+    const mat = pointsRef.current.material as THREE.PointsMaterial;
+    mat.size = 0.12 + Math.sin(time * 0.8) * 0.02;
+    mat.opacity = 0.35 + Math.sin(time * 0.6) * 0.08;
   });
 
   return (
@@ -119,22 +146,34 @@ function Particles() {
   );
 }
 
-function getSweepInitialPositions(count: number) {
+function getSweepInitialData(count: number) {
   return Array.from({ length: count }).map(() => ({
     x: (Math.random() - 0.5) * 40,
     z: (Math.random() - 0.5) * -50,
+    phase: Math.random() * Math.PI * 2,
   }));
 }
 
 function LightSweeps() {
   const sweepRef = useRef<THREE.Group>(null);
-  const initialPositions = useMemo(() => getSweepInitialPositions(4), []);
+  const sweepData = useMemo(() => getSweepInitialData(3), []);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (!sweepRef.current) return;
+    const time = state.clock.getElapsedTime();
+
     sweepRef.current.children.forEach((child, i) => {
-      const speed = 0.5 + i * 0.1;
+      const speed = 0.3 + i * 0.08;
       child.position.z += speed;
+
+      // Gentle sine wobble on X axis
+      child.position.x += Math.sin(time * 0.5 + sweepData[i].phase) * 0.02;
+
+      // Smooth opacity fade based on Z position (fade in/out at boundaries)
+      const mat = (child as THREE.Mesh).material as THREE.MeshBasicMaterial;
+      const zNorm = (child.position.z + 50) / 80; // 0 at z=-50, 1 at z=30
+      mat.opacity = 0.35 * Math.sin(zNorm * Math.PI); // bell curve fade
+
       if (child.position.z > 30) {
         child.position.z = -50;
         child.position.x = (Math.random() - 0.5) * 60;
@@ -144,17 +183,17 @@ function LightSweeps() {
 
   return (
     <group ref={sweepRef}>
-      {initialPositions.map((pos, i) => (
+      {sweepData.map((pos, i) => (
         <mesh
           key={i}
-          position={[pos.x, -2.99, pos.z]}
+          position={[pos.x, -2.98, pos.z]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry args={[0.05, 10]} />
           <meshBasicMaterial
             color="#60a5fa"
             transparent
-            opacity={0.4}
+            opacity={0}
             blending={THREE.AdditiveBlending}
           />
         </mesh>
@@ -167,36 +206,46 @@ function Scene() {
   const { camera } = useThree();
   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame(({ pointer }) => {
+  // Use springs/lerp for smooth interaction mapping
+  const smoothMouseX = useRef(new THREE.Vector2(0, 0));
+  const smoothScroll = useRef(0);
+
+  useFrame((state) => {
     if (!groupRef.current) return;
+    const { pointer } = state;
 
-    // Combine mouse parallax with a subtle scroll-based tilt
+    // Responsive mouse smoothing — faster follow for fluid feel
+    smoothMouseX.current.x += (pointer.x - smoothMouseX.current.x) * 0.07;
+    smoothMouseX.current.y += (pointer.y - smoothMouseX.current.y) * 0.07;
+
     const scrollY = typeof window !== 'undefined' ? window.scrollY : 0;
-    const scrollTilt = scrollY * 0.0005;
+    smoothScroll.current += (scrollY - smoothScroll.current) * 0.06;
+    const scrollTilt = smoothScroll.current * 0.0004;
 
-    const targetX = (pointer.y * Math.PI) / 8 + 0.3 + scrollTilt;
-    const targetY = (pointer.x * Math.PI) / 10;
+    // Reduced rotation range for subtler, less disorienting movement
+    const targetX = (smoothMouseX.current.y * Math.PI) / 12 + 0.3 + scrollTilt;
+    const targetY = (smoothMouseX.current.x * Math.PI) / 14;
 
+    // Faster rotation lerp for snappier response
     groupRef.current.rotation.x +=
-      (targetX - groupRef.current.rotation.x) * 0.05;
+      (targetX - groupRef.current.rotation.x) * 0.06;
     groupRef.current.rotation.y +=
-      (targetY - groupRef.current.rotation.y) * 0.05;
+      (targetY - groupRef.current.rotation.y) * 0.06;
 
-    // Smooth camera transition
     /* eslint-disable react-hooks/immutability */
-    camera.position.x += (pointer.x * 3 - camera.position.x) * 0.04;
-    camera.position.z = 10 + scrollY * 0.002; // Pull back slightly on scroll
-    /* eslint-enable react-hooks/immutability */
+    camera.position.x +=
+      (smoothMouseX.current.x * 2.5 - camera.position.x) * 0.05;
+    camera.position.z = 10 + smoothScroll.current * 0.002;
     camera.lookAt(0, -1, -8);
+    /* eslint-enable react-hooks/immutability */
   });
 
   return (
     <>
       <color attach="background" args={['#020617']} />
-      <fog attach="fog" args={['#020617', 5, 35]} />
+      <fog attach="fog" args={['#020617', 5, 45]} />
       <ambientLight intensity={0.2} color="#ffffff" />
 
-      {/* Centric Focal Glows */}
       <pointLight
         position={[0, -2, -15]}
         intensity={25}
@@ -221,27 +270,23 @@ function Scene() {
           speed={1}
         />
 
-        {/* Layered Particles */}
         <Particles />
-
-        {/* Occasional Light Swipes along grid lines */}
         <LightSweeps />
 
-        {/* The Grid - Minimalist and Premium */}
+        {/* The Grid - Increased Z-offset and adjusted thickness to prevent blinking */}
         <Grid
-          position={[0, -3.001, 0]}
+          position={[0, -2.99, 0]}
           args={[100, 100]}
-          cellSize={0}
+          cellSize={1}
           cellThickness={0}
-          sectionSize={5}
-          sectionThickness={1.2}
-          sectionColor="#1e3a8a"
-          fadeDistance={35}
+          sectionSize={3.5}
+          sectionThickness={1.0}
+          sectionColor="#60a5fa"
+          fadeDistance={40}
           fadeStrength={1}
           infiniteGrid
         />
 
-        {/* Reflection Floor Layer */}
         <mesh position={[0, -3.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[100, 100]} />
           <MeshReflectorMaterial
@@ -278,7 +323,10 @@ export function InteractiveGrid() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
+          transition={{
+            duration: 2,
+            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+          }}
           className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#020617]"
         >
           {/* Subtle Noise Texture Overlay */}
@@ -289,9 +337,19 @@ export function InteractiveGrid() {
             }}
           />
 
-          {/* R3F WebGL Canvas */}
+          {/* R3F WebGL Canvas - Optimized for stability */}
           <div className="absolute inset-0" aria-hidden="true">
-            <Canvas camera={{ position: [0, 0, 10], fov: 55 }}>
+            <Canvas
+              camera={{ position: [0, 0, 10], fov: 55 }}
+              dpr={[1, 2]}
+              gl={{
+                antialias: true,
+                alpha: false,
+                stencil: false,
+                depth: true,
+                powerPreference: 'high-performance',
+              }}
+            >
               <Scene />
             </Canvas>
           </div>

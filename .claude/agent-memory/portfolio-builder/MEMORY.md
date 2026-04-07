@@ -1,4 +1,0 @@
-- [shadcn base-nova render prop](feedback_shadcn_baseui.md) — base-nova uses @base-ui/react render prop, not Radix asChild
-- [Lucide v1.7 no brand icons](feedback_lucide_brand_icons.md) — Github/Linkedin/Figma icons removed, use generic alternatives
-- [Framer Motion ease as const](feedback_framer_motion_ease.md) — ease string values need `as const` in strict TS variant objects
-- [React 19 no setState in useEffect](feedback_react19_no_useeffect_setstate.md) — use useSyncExternalStore for mounted checks

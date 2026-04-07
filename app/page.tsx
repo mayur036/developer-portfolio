@@ -6,6 +6,7 @@ import { Footer } from '@/src/components/sections/footer';
 import { Hero } from '@/src/components/sections/hero';
 import { Navbar } from '@/src/components/sections/navbar';
 import { Projects } from '@/src/components/sections/projects';
+import { Services } from '@/src/components/sections/services';
 import { Skills } from '@/src/components/sections/skills';
 import { BackToTop } from '@/src/components/back-to-top';
 
@@ -22,6 +23,7 @@ export default function Home() {
         <Projects />
         <Experience />
         <Skills />
+        <Services />
         <Credentials />
         <Contact />
       </main>

@@ -29,14 +29,25 @@ export function Process() {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.1,
+                    ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+                  }}
                 >
                   {/* Step number dot (mobile) */}
                   <div className="absolute top-1.5 left-4 z-10 flex size-5 -translate-x-1/2 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground md:hidden">
                     {index + 1}
                   </div>
 
-                  <div className="glow-border rounded-xl bg-surface p-5 transition-all group-hover:-translate-y-1 group-hover:border-accent">
+                  <motion.div
+                    className="glow-border rounded-xl bg-surface p-5"
+                    whileHover={{
+                      y: -4,
+                      borderColor: 'var(--accent)',
+                      transition: { duration: 0.3, ease: 'easeOut' },
+                    }}
+                  >
                     <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-accent/10">
                       <StepIcon className="size-5 text-accent" />
                     </div>
@@ -46,7 +57,7 @@ export function Process() {
                     <p className="text-sm leading-relaxed text-body">
                       {step.description}
                     </p>
-                  </div>
+                  </motion.div>
                 </motion.div>
               );
             })}

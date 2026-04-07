@@ -19,10 +19,14 @@ import {
   Server,
   Settings,
   SquareTerminal,
+  Workflow,
   Wrench,
+  Zap,
   Music,
   Plane,
   BookOpen,
+  Bot,
+  Layers,
 } from 'lucide-react';
 
 import type {
@@ -33,6 +37,7 @@ import type {
   NavLink,
   ProcessStep,
   Project,
+  Service,
   Skill,
   SkillCategory,
   SocialLink,
@@ -248,6 +253,83 @@ export const SKILLS: SkillCategory[] = [
       { name: 'Stripe Payments', icon: Settings },
       { name: 'MongoDB / SQL', icon: Database },
       { name: 'Socket.IO', icon: GitBranch },
+    ],
+  },
+];
+
+// ─── Services ──────────────────────────────────────────────
+
+export const SERVICES: Service[] = [
+  {
+    id: 'service-fullstack',
+    icon: Layers,
+    title: 'Full-Stack Web Development',
+    description:
+      'End-to-end web applications built with modern frameworks, clean architecture, and production-grade reliability.',
+    highlights: [
+      'Next.js & React applications',
+      'Node.js REST & GraphQL APIs',
+      'Database design & optimization',
+    ],
+  },
+  {
+    id: 'service-ai',
+    icon: Bot,
+    title: 'AI-Powered Business Solutions',
+    description:
+      'Integrating AI tools and agentic workflows into your business processes to accelerate delivery and reduce costs.',
+    highlights: [
+      'AI-driven development pipelines',
+      'Intelligent automation systems',
+      'Custom AI agent orchestration',
+    ],
+  },
+  {
+    id: 'service-frontend',
+    icon: Layout,
+    title: 'UI/UX & Frontend Architecture',
+    description:
+      'Pixel-perfect interfaces with smooth animations, responsive design, and accessible component systems.',
+    highlights: [
+      'Tailwind CSS & Shadcn UI',
+      'Framer Motion animations',
+      'Design system implementation',
+    ],
+  },
+  {
+    id: 'service-cloud',
+    icon: Cloud,
+    title: 'Cloud & Infrastructure',
+    description:
+      'Scalable cloud deployments on AWS with CI/CD pipelines, monitoring, and infrastructure best practices.',
+    highlights: [
+      'AWS deployment & scaling',
+      'CI/CD pipeline setup',
+      'Performance monitoring',
+    ],
+  },
+  {
+    id: 'service-api',
+    icon: Workflow,
+    title: 'API Development & Integration',
+    description:
+      'Robust API design with third-party integrations including payment gateways, real-time systems, and external services.',
+    highlights: [
+      'Stripe & payment integrations',
+      'Socket.IO real-time systems',
+      'Third-party API orchestration',
+    ],
+  },
+  {
+    id: 'service-consulting',
+    icon: Zap,
+    title: 'Technical Consulting',
+    description:
+      'Strategic guidance on architecture decisions, tech stack selection, and modernizing legacy systems for scale.',
+    highlights: [
+      'Architecture reviews',
+      'Tech stack evaluation',
+      'Performance optimization',
     ],
   },
 ];

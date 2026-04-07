@@ -23,7 +23,10 @@ export function Contact() {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5 }}
+            transition={{
+              duration: 0.8,
+              ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+            }}
           >
             <h3 className="mb-6 font-heading text-base font-semibold text-heading">
               Send a Message
@@ -84,7 +87,11 @@ export function Contact() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.1,
+              ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+            }}
           >
             {/* Status card */}
             <div className="flex items-center gap-3 rounded-xl border border-border-color bg-surface p-4">
@@ -96,15 +103,29 @@ export function Contact() {
 
             {/* Social grid */}
             <div className="grid gap-3 sm:grid-cols-2">
-              {SOCIAL_LINKS.map((link) => {
+              {SOCIAL_LINKS.map((link, index) => {
                 const LinkIcon = link.icon;
                 return (
-                  <a
+                  <motion.a
                     key={link.label}
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="social-card group flex items-center gap-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.2 + index * 0.08,
+                      ease: [0.16, 1, 0.3, 1] as [
+                        number,
+                        number,
+                        number,
+                        number,
+                      ],
+                    }}
+                    whileHover={{ y: -3, scale: 1.02 }}
                   >
                     <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10 transition-colors group-hover:bg-accent/20">
                       <LinkIcon className="size-5 text-accent" />
@@ -119,7 +140,7 @@ export function Contact() {
                         </p>
                       )}
                     </div>
-                  </a>
+                  </motion.a>
                 );
               })}
             </div>

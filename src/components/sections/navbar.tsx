@@ -40,9 +40,12 @@ export function Navbar() {
         className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
           isScrolled ? 'glass shadow-sm' : 'bg-transparent'
         }`}
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          duration: 0.8,
+          ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+        }}
       >
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           {/* Logo */}

@@ -37,10 +37,24 @@ export function Experience() {
                 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.1,
+                  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+                }}
               >
                 {/* Timeline dot */}
-                <div className="absolute top-2 left-4 z-10 size-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_var(--accent-glow)] md:left-1/2" />
+                <motion.div
+                  className="absolute top-2 left-4 z-10 size-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_var(--accent-glow)] md:left-1/2"
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    delay: index * 0.1 + 0.2,
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+                  }}
+                />
 
                 {/* Content card */}
                 <div className="card-hover-glow ml-10 w-full rounded-xl border border-border-color bg-surface p-6 md:ml-0">
