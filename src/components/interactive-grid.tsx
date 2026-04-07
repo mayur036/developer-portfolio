@@ -128,7 +128,7 @@ function getSweepInitialPositions(count: number) {
 
 function LightSweeps() {
   const sweepRef = useRef<THREE.Group>(null);
-  const initialPositions = useMemo(() => getSweepInitialPositions(4), []);
+  const initialPositions = useMemo(() => getSweepInitialPositions(3), []);
 
   useFrame(() => {
     if (!sweepRef.current) return;
@@ -147,7 +147,7 @@ function LightSweeps() {
       {initialPositions.map((pos, i) => (
         <mesh
           key={i}
-          position={[pos.x, -2.99, pos.z]}
+          position={[pos.x, -2.98, pos.z]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <planeGeometry args={[0.05, 10]} />
@@ -167,36 +167,43 @@ function Scene() {
   const { camera } = useThree();
   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame(({ pointer }) => {
+  // Use springs/lerp for smooth interaction mapping
+  const smoothMouseX = useRef(new THREE.Vector2(0, 0));
+  const smoothScroll = useRef(0);
+
+  useFrame((state) => {
     if (!groupRef.current) return;
+    const { pointer } = state;
 
-    // Combine mouse parallax with a subtle scroll-based tilt
+    smoothMouseX.current.x += (pointer.x - smoothMouseX.current.x) * 0.05;
+    smoothMouseX.current.y += (pointer.y - smoothMouseX.current.y) * 0.05;
+
     const scrollY = typeof window !== 'undefined' ? window.scrollY : 0;
-    const scrollTilt = scrollY * 0.0005;
+    smoothScroll.current += (scrollY - smoothScroll.current) * 0.05;
+    const scrollTilt = smoothScroll.current * 0.0005;
 
-    const targetX = (pointer.y * Math.PI) / 8 + 0.3 + scrollTilt;
-    const targetY = (pointer.x * Math.PI) / 10;
+    const targetX = (smoothMouseX.current.y * Math.PI) / 8 + 0.3 + scrollTilt;
+    const targetY = (smoothMouseX.current.x * Math.PI) / 10;
 
     groupRef.current.rotation.x +=
       (targetX - groupRef.current.rotation.x) * 0.05;
     groupRef.current.rotation.y +=
       (targetY - groupRef.current.rotation.y) * 0.05;
 
-    // Smooth camera transition
     /* eslint-disable react-hooks/immutability */
-    camera.position.x += (pointer.x * 3 - camera.position.x) * 0.04;
-    camera.position.z = 10 + scrollY * 0.002; // Pull back slightly on scroll
-    /* eslint-enable react-hooks/immutability */
+    camera.position.x +=
+      (smoothMouseX.current.x * 3 - camera.position.x) * 0.04;
+    camera.position.z = 10 + smoothScroll.current * 0.002;
     camera.lookAt(0, -1, -8);
+    /* eslint-enable react-hooks/immutability */
   });
 
   return (
     <>
       <color attach="background" args={['#020617']} />
-      <fog attach="fog" args={['#020617', 5, 35]} />
+      <fog attach="fog" args={['#020617', 5, 45]} />
       <ambientLight intensity={0.2} color="#ffffff" />
 
-      {/* Centric Focal Glows */}
       <pointLight
         position={[0, -2, -15]}
         intensity={25}
@@ -221,27 +228,23 @@ function Scene() {
           speed={1}
         />
 
-        {/* Layered Particles */}
         <Particles />
-
-        {/* Occasional Light Swipes along grid lines */}
         <LightSweeps />
 
-        {/* The Grid - Minimalist and Premium */}
+        {/* The Grid - Increased Z-offset and adjusted thickness to prevent blinking */}
         <Grid
-          position={[0, -3.001, 0]}
+          position={[0, -2.99, 0]}
           args={[100, 100]}
-          cellSize={0}
+          cellSize={1}
           cellThickness={0}
-          sectionSize={5}
-          sectionThickness={1.2}
-          sectionColor="#1e3a8a"
-          fadeDistance={35}
+          sectionSize={3.5}
+          sectionThickness={1.0}
+          sectionColor="#60a5fa"
+          fadeDistance={40}
           fadeStrength={1}
           infiniteGrid
         />
 
-        {/* Reflection Floor Layer */}
         <mesh position={[0, -3.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[100, 100]} />
           <MeshReflectorMaterial
@@ -289,9 +292,19 @@ export function InteractiveGrid() {
             }}
           />
 
-          {/* R3F WebGL Canvas */}
+          {/* R3F WebGL Canvas - Optimized for stability */}
           <div className="absolute inset-0" aria-hidden="true">
-            <Canvas camera={{ position: [0, 0, 10], fov: 55 }}>
+            <Canvas
+              camera={{ position: [0, 0, 10], fov: 55 }}
+              dpr={[1, 2]}
+              gl={{
+                antialias: true,
+                alpha: false,
+                stencil: false,
+                depth: true,
+                powerPreference: 'high-performance',
+              }}
+            >
               <Scene />
             </Canvas>
           </div>

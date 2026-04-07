@@ -42,13 +42,32 @@ function TechMarquee() {
 }
 
 export function About() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 },
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      },
     },
+  };
+
+  const cardHover = {
+    y: -5,
+    scale: 1.01,
+    transition: { duration: 0.3, ease: 'easeOut' as const },
   };
 
   return (
@@ -63,14 +82,18 @@ export function About() {
         {/* Tech Marquee */}
         <TechMarquee />
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <motion.div
+          className="grid gap-6 md:grid-cols-2"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
           {/* Who I Am */}
           <motion.div
-            className="glow-border rounded-xl bg-surface p-6 sm:p-8"
+            className="glow-border rounded-xl bg-surface p-6 sm:p-8 transition-colors hover:border-accent/40"
             variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            whileHover={cardHover}
           >
             <h3 className="mb-4 font-heading text-base font-semibold text-accent">
               Who I Am
@@ -93,12 +116,9 @@ export function About() {
 
           {/* Journey */}
           <motion.div
-            className="glow-border rounded-xl bg-surface p-6 sm:p-8"
+            className="glow-border rounded-xl bg-surface p-6 sm:p-8 transition-colors hover:border-accent/40"
             variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: 0.1 }}
+            whileHover={cardHover}
           >
             <h3 className="mb-4 font-heading text-base font-semibold text-accent">
               Journey
@@ -130,43 +150,50 @@ export function About() {
             <div className="mt-6 border-t border-border-color pt-4">
               <ul className="space-y-2">
                 {ABOUT.highlights.map((item) => (
-                  <li
+                  <motion.li
                     key={item}
                     className="flex items-start gap-2 text-xs text-body"
+                    whileHover={{ x: 3, color: 'var(--accent)' }}
+                    transition={{ duration: 0.2 }}
                   >
                     <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-accent" />
                     <span>{item}</span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Beyond Code - Hobbies */}
         <motion.div
           className="mt-8"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          variants={containerVariants}
         >
-          <h3 className="mb-4 font-heading text-base font-semibold text-heading">
+          <motion.h3
+            className="mb-4 font-heading text-base font-semibold text-heading"
+            variants={itemVariants}
+          >
             Beyond Code
-          </h3>
+          </motion.h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
             {HOBBIES.map((hobby) => {
               const HobbyIcon = hobby.icon;
               return (
-                <div
+                <motion.div
                   key={hobby.name}
-                  className="glow-border flex flex-col items-center gap-2 rounded-xl bg-surface p-4 text-center transition-all hover:-translate-y-1"
+                  className="glow-border flex flex-col items-center gap-2 rounded-xl bg-surface p-4 text-center transition-all"
+                  variants={itemVariants}
+                  whileHover={{ y: -5, borderColor: 'var(--accent)' }}
                 >
                   <HobbyIcon className="size-6 text-accent" />
                   <span className="text-xs font-medium text-body">
                     {hobby.name}
                   </span>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -175,23 +202,28 @@ export function About() {
         {/* Tech Stack Grid */}
         <motion.div
           className="mt-8"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          variants={containerVariants}
         >
-          <h3 className="mb-4 font-heading text-base font-semibold text-heading">
+          <motion.h3
+            className="mb-4 font-heading text-base font-semibold text-heading"
+            variants={itemVariants}
+          >
             Tech Stack
-          </h3>
+          </motion.h3>
           <div className="flex flex-wrap gap-2">
             {SKILLS.flatMap((category) =>
               category.skills.map((skill) => (
-                <span
+                <motion.span
                   key={skill.name}
                   className="rounded-full border border-border-color bg-surface px-4 py-1.5 text-xs font-medium text-body transition-colors hover:border-accent hover:text-accent"
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.05, y: -2 }}
                 >
                   {skill.name}
-                </span>
+                </motion.span>
               )),
             )}
           </div>
