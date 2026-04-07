@@ -5,14 +5,14 @@ description: "Create new Claude Code skills for this developer portfolio project
 
 # Skill Creator
 
-Create new skills (slash commands) for this developer portfolio project. Skills live in `.agents/skills/<name>/SKILL.md` (the Agent Skills open standard path for cross-client compatibility).
+Create new skills (slash commands) for this developer portfolio project. Skills live in `.claude/skills/<name>/SKILL.md` (Claude Code's native path). A gitignored symlink at `.agents/skills/` provides cross-client compatibility with the [Agent Skills](https://agentskills.io) open standard.
 
 ## Skill Structure
 
 Each skill is a folder containing a `SKILL.md` file with YAML frontmatter and markdown instructions:
 
 ```
-.agents/skills/<skill-name>/
+.claude/skills/<skill-name>/
 ├── SKILL.md          # Required: metadata + instructions
 ├── scripts/          # Optional: executable code
 ├── references/       # Optional: documentation
@@ -62,7 +62,7 @@ Before creating a new skill, check what already exists:
 
 1. **Ask what the skill should do** — understand the user's intent, trigger contexts, and expected behavior
 2. **Check for overlap** — make sure it doesn't duplicate an existing skill
-3. **Write the SKILL.md** — create in `.agents/skills/<name>/SKILL.md`
+3. **Write the SKILL.md** — create in `.claude/skills/<name>/SKILL.md`
 4. **Verify** — confirm the skill file is valid and the description covers the right trigger phrases
 
 ## Tips
