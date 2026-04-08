@@ -61,8 +61,45 @@ Ensure `tailwind.config.ts` includes the shadcn animation presets and CSS variab
 - [ ] **Performance**: Use dynamic imports for heavy 3D components like `InteractiveGrid`.
 - [ ] **Mobile First**: Verify all shadcn `Sheet` or `Tabs` implementations are responsive.
 
-## 5. Reference Links
+## 5. Dark Mode Migration
 
+To implement or update dark mode support in Next.js, follow these steps:
+
+1.  **Install dependencies**:
+
+    ```bash
+    npm install next-themes
+    ```
+
+2.  **Create Theme Provider**: Create `src/components/theme-provider.tsx`:
+
+    ```tsx
+    'use client';
+    import * as React from 'react';
+    import { ThemeProvider as NextThemesProvider } from 'next-themes';
+
+    export function ThemeProvider({
+      children,
+      ...props
+    }: React.ComponentProps<typeof NextThemesProvider>) {
+      return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+    }
+    ```
+
+3.  **Configure Root Layout**: Add `suppressHydrationWarning` to the `<html>` tag and wrap children with the provider in `app/layout.tsx`:
+    ```tsx
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+    ```
+
+## 6. Reference Links
+
+- [shadcn/ui Dark Mode (Next.js)](https://ui.shadcn.com/docs/dark-mode/next)
 - [shadcn/ui Documentation](https://ui.shadcn.com/docs/components)
 - [shadcn/ui Installation Guide](https://ui.shadcn.com/docs/installation)
 - [shadcn/ui Theming](https://ui.shadcn.com/docs/theming)

@@ -2,14 +2,7 @@
 
 import { motion } from 'framer-motion';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 import { SectionHeading } from '@/src/components/section-heading';
 import { SKILLS } from '@/src/data/portfolio';
 
@@ -49,7 +42,7 @@ export function Skills() {
         />
 
         <div className="mt-12 space-y-16">
-          {SKILLS.map((category, catIdx) => (
+          {SKILLS.map((category) => (
             <motion.div
               key={category.title}
               variants={containerVariants}

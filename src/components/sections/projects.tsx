@@ -1,16 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ExternalLink, SquareTerminal } from 'lucide-react';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { ProjectCard } from './projects/project-card';
 import { SectionHeading } from '@/src/components/section-heading';
 import { PROJECTS } from '@/src/data/portfolio';
