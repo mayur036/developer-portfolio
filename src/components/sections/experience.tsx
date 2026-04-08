@@ -3,12 +3,21 @@
 import { motion } from 'framer-motion';
 
 import { Badge } from '@/components/ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { SectionHeading } from '@/src/components/section-heading';
 import { EXPERIENCE } from '@/src/data/portfolio';
 
 export function Experience() {
   return (
-    <section id="experience" className="bg-surface-alt/50 py-20 sm:py-28">
+    <section
+      id="experience"
+      className="bg-surface-alt/50 py-20 sm:py-28"
+      aria-labelledby="experience-title"
+    >
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <SectionHeading
           sectionNumber="003.5 — Experience"
@@ -16,9 +25,12 @@ export function Experience() {
           subtitle="The teams and challenges that shaped my approach to building software."
         />
 
-        <div className="relative">
+        <div className="relative" role="list">
           {/* Timeline line */}
-          <div className="absolute top-0 left-4 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent md:left-1/2 md:-translate-x-px" />
+          <div
+            className="absolute top-0 left-4 h-full w-px bg-gradient-to-b from-accent via-accent/40 to-transparent md:left-1/2 md:-translate-x-px"
+            aria-hidden="true"
+          />
 
           {EXPERIENCE.map((exp, index) => {
             const isLeft = index % 2 === 0;
@@ -26,6 +38,7 @@ export function Experience() {
             return (
               <motion.div
                 key={exp.id}
+                role="listitem"
                 className={`relative mb-12 flex last:mb-0 ${
                   isLeft
                     ? 'md:justify-start md:pr-[calc(50%+2rem)]'
@@ -46,6 +59,7 @@ export function Experience() {
                 {/* Timeline dot */}
                 <motion.div
                   className="absolute top-2 left-4 z-10 size-3 -translate-x-1/2 rounded-full border-2 border-accent bg-background shadow-[0_0_10px_var(--accent-glow)] md:left-1/2"
+                  aria-hidden="true"
                   initial={{ scale: 0, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
@@ -57,7 +71,10 @@ export function Experience() {
                 />
 
                 {/* Content card */}
-                <div className="card-hover-glow ml-10 w-full rounded-xl border border-border-color bg-surface p-6 md:ml-0">
+                <div
+                  className="card-hover-glow ml-10 w-full rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-6 md:ml-0"
+                  aria-label={`${exp.role} at ${exp.company}`}
+                >
                   <div className="mb-1 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                     <h3 className="font-heading text-base font-semibold text-heading">
                       {exp.role}
@@ -70,27 +87,46 @@ export function Experience() {
                     {exp.company}
                   </p>
 
-                  <ul className="mb-4 space-y-2">
+                  <ul
+                    className="mb-4 space-y-2"
+                    aria-label="Responsibilities and achievements"
+                  >
                     {exp.bullets.map((bullet, i) => (
                       <li
                         key={i}
                         className="flex items-start gap-2 text-sm leading-relaxed text-body"
                       >
-                        <span className="mt-2 size-1 shrink-0 rounded-full bg-accent" />
+                        <span
+                          className="mt-2 size-1 shrink-0 rounded-full bg-accent"
+                          aria-hidden="true"
+                        />
                         {bullet}
                       </li>
                     ))}
                   </ul>
 
-                  <div className="flex flex-wrap gap-1.5">
+                  <div
+                    className="flex flex-wrap gap-1.5"
+                    aria-label="Technologies used"
+                  >
                     {exp.techTags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className="border border-border-color bg-surface-alt text-xs text-body"
-                      >
-                        {tag}
-                      </Badge>
+                      <Tooltip key={tag}>
+                        <TooltipTrigger
+                          render={
+                            <Badge
+                              variant="secondary"
+                              className="border border-border-color bg-surface-alt/50 px-3 py-1.5 text-xs font-medium text-body transition-all hover:bg-accent/10 hover:text-accent"
+                            >
+                              {tag}
+                            </Badge>
+                          }
+                        />
+                        <TooltipContent>
+                          <p>
+                            Used {tag} at {exp.company}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
                     ))}
                   </div>
                 </div>

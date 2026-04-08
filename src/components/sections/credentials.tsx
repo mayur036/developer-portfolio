@@ -8,7 +8,11 @@ import { CREDENTIALS } from '@/src/data/portfolio';
 
 export function Credentials() {
   return (
-    <section id="credentials" className="py-20 sm:py-28">
+    <section
+      id="credentials"
+      className="py-20 sm:py-28"
+      aria-labelledby="credentials-title"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           sectionNumber="004 — Credentials"
@@ -26,11 +30,17 @@ export function Credentials() {
             ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
           }}
         >
-          <div className="credential-carousel">
+          <div
+            className="credential-carousel"
+            role="list"
+            aria-label="Certificates and achievements"
+          >
             {CREDENTIALS.map((cred, index) => (
               <motion.div
                 key={cred.id}
-                className="card-hover-glow w-80 shrink-0 rounded-xl border border-border-color bg-surface p-6 sm:w-96"
+                role="listitem"
+                className="card-hover-glow w-80 shrink-0 rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-6 sm:w-96"
+                aria-label={`${cred.title} by ${cred.issuer}`}
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -41,13 +51,12 @@ export function Credentials() {
                 }}
                 whileHover={{
                   y: -5,
-                  scale: 1.02,
                   transition: { duration: 0.3, ease: 'easeOut' },
                 }}
               >
                 <div className="mb-4 flex items-start justify-between">
                   <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10">
-                    <Award className="size-5 text-accent" />
+                    <Award className="size-5 text-accent" aria-hidden="true" />
                   </div>
                   <span className="font-mono text-xs text-muted-text">
                     {cred.date}
@@ -65,8 +74,9 @@ export function Credentials() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-xs font-medium text-accent transition-colors hover:text-accent/80"
+                    aria-label={`View certificate for ${cred.title}`}
                   >
-                    <ExternalLink className="size-3" />
+                    <ExternalLink className="size-3" aria-hidden="true" />
                     View Certificate
                   </a>
                 )}
@@ -76,7 +86,10 @@ export function Credentials() {
         </motion.div>
 
         {/* Scroll hint */}
-        <p className="mt-4 text-center text-xs text-muted-text">
+        <p
+          className="mt-4 text-center text-xs text-muted-text"
+          aria-hidden="true"
+        >
           ← Scroll to see more →
         </p>
       </div>
