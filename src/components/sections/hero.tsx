@@ -3,6 +3,14 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ArrowDown, Download, FolderOpen } from 'lucide-react';
 import { useEffect } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { HERO_STATS, PERSONAL } from '@/src/data/portfolio';
 
 export function Hero() {
@@ -69,10 +77,13 @@ export function Hero() {
         >
           {/* Badge */}
           <motion.div variants={itemVariants}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border-color bg-surface/60 px-4 py-1.5 text-xs font-medium text-body backdrop-blur-sm">
+            <Badge
+              variant="outline"
+              className="gap-2 rounded-full border-border-color bg-surface/60 px-4 py-1.5 text-xs font-medium text-body backdrop-blur-sm"
+            >
               <span className="status-dot size-1.5 rounded-full bg-green-500" />
               {PERSONAL.badge}
-            </span>
+            </Badge>
           </motion.div>
 
           {/* Name */}
@@ -97,26 +108,50 @@ export function Hero() {
             className="mt-10 flex flex-wrap justify-center gap-4"
             variants={itemVariants}
           >
-            <button
-              id="cta-hero-projects"
-              className="gradient-btn flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold transition-transform hover:scale-105 active:scale-95 sm:px-10"
-              onClick={() =>
-                document
-                  .querySelector('#projects')
-                  ?.scrollIntoView({ behavior: 'smooth' })
-              }
-            >
-              <FolderOpen className="size-4" />
-              View Projects
-            </button>
-            <a
-              href={PERSONAL.resumeUrl}
-              id="cta-hero-resume"
-              className="ghost-btn flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold transition-transform hover:scale-105 active:scale-95 sm:px-10"
-            >
-              <Download className="size-4" />
-              View Resume
-            </a>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    size="lg"
+                    className="gradient-btn h-12 rounded-full px-8 text-sm font-semibold sm:px-10"
+                    aria-label="View my featured projects"
+                    onClick={() =>
+                      document
+                        .querySelector('#projects')
+                        ?.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  >
+                    <FolderOpen className="mr-2 size-4" />
+                    View Projects
+                  </Button>
+                }
+              />
+              <TooltipContent>
+                <p>Browse through my featured work</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="h-12 rounded-full border-border-color px-8 text-sm font-semibold transition-all hover:border-accent hover:text-accent sm:px-10"
+                    aria-label="View and download my resume"
+                    render={
+                      <a href={PERSONAL.resumeUrl}>
+                        <Download className="mr-2 size-4" />
+                        View Resume
+                      </a>
+                    }
+                  />
+                }
+              />
+              <TooltipContent>
+                <p>Download my professional CV</p>
+              </TooltipContent>
+            </Tooltip>
           </motion.div>
 
           {/* Stats Row */}

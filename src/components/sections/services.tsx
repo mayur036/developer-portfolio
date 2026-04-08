@@ -35,7 +35,11 @@ export function Services(): React.JSX.Element {
   };
 
   return (
-    <section id="services" className="py-20 sm:py-28">
+    <section
+      id="services"
+      className="py-20 sm:py-28"
+      aria-labelledby="services-title"
+    >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeading
           sectionNumber="004 — Services"
@@ -49,6 +53,8 @@ export function Services(): React.JSX.Element {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
+          role="list"
+          aria-label="Services offered"
         >
           {SERVICES.map((service) => {
             const ServiceIcon = service.icon;
@@ -57,10 +63,15 @@ export function Services(): React.JSX.Element {
                 key={service.id}
                 variants={itemVariants}
                 whileHover={cardHover}
-                className="group card-hover-glow rounded-xl border border-border-color bg-surface p-6"
+                role="listitem"
+                className="group card-hover-glow rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-6"
+                aria-label={`Service: ${service.title}`}
               >
                 <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-accent/10 transition-colors group-hover:bg-accent/20">
-                  <ServiceIcon className="size-6 text-accent" />
+                  <ServiceIcon
+                    className="size-6 text-accent"
+                    aria-hidden="true"
+                  />
                 </div>
 
                 <h3 className="mb-2 font-heading text-base font-semibold text-heading">
@@ -71,13 +82,19 @@ export function Services(): React.JSX.Element {
                   {service.description}
                 </p>
 
-                <ul className="space-y-2">
+                <ul
+                  className="space-y-2"
+                  aria-label="Key features of this service"
+                >
                   {service.highlights.map((highlight) => (
                     <li
                       key={highlight}
                       className="flex items-center gap-2 text-xs text-muted-text"
                     >
-                      <ArrowRight className="size-3 shrink-0 text-accent" />
+                      <ArrowRight
+                        className="size-3 shrink-0 text-accent"
+                        aria-hidden="true"
+                      />
                       {highlight}
                     </li>
                   ))}

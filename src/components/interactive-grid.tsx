@@ -5,6 +5,7 @@ import { useEffect, useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Grid, MeshReflectorMaterial, Stars } from '@react-three/drei';
+import { useTheme } from 'next-themes';
 
 /**
  * Creates a simple circular texture for glowing points.
@@ -47,7 +48,7 @@ function getParticleInitialData(count: number) {
   return { pos, vel, ph };
 }
 
-function Particles() {
+function Particles({ color }: { color: string }) {
   const particleCount = 200;
   const { viewport, mouse } = useThree();
   const circleTexture = useMemo(() => createCircleTexture(), []);
@@ -59,8 +60,6 @@ function Particles() {
   } = useMemo(() => getParticleInitialData(particleCount), [particleCount]);
 
   const pointsRef = useRef<THREE.Points>(null);
-
-  // Smoothed mouse position to avoid jerky particle reactions
   const smoothMouse = useRef(new THREE.Vector2(0, 0));
 
   useFrame((state) => {
@@ -70,7 +69,6 @@ function Particles() {
     const posArray = pointsRef.current.geometry.attributes.position
       .array as Float32Array;
 
-    // Smooth the mouse position for fluid interaction
     const targetMouseX = mouse.x * viewport.width * 4;
     const targetMouseY = mouse.y * viewport.height * 4;
     smoothMouse.current.x += (targetMouseX - smoothMouse.current.x) * 0.08;
@@ -82,23 +80,20 @@ function Particles() {
       const i3 = i * 3;
       const phase = phases[i];
 
-      // Organic floating motion with varied frequencies per axis
       posArray[i3] += velocities[i3] + Math.sin(time * 0.6 + phase) * 0.004;
       posArray[i3 + 1] +=
         velocities[i3 + 1] + Math.cos(time * 0.5 + phase * 1.3) * 0.004;
       posArray[i3 + 2] +=
         velocities[i3 + 2] + Math.sin(time * 0.4 + phase * 0.7) * 0.002;
 
-      // Smooth mouse interaction with Gaussian-like falloff
       const dx = posArray[i3] - mouseX;
       const dy = posArray[i3 + 1] - mouseY;
       const distSq = dx * dx + dy * dy;
-      const influence = Math.exp(-distSq / 80); // soft Gaussian falloff
+      const influence = Math.exp(-distSq / 80);
       const force = influence * 0.15;
       posArray[i3] += dx * force;
       posArray[i3 + 1] += dy * force;
 
-      // Soft boundary: exponential drag that gently pulls particles back
       const bx = posArray[i3];
       const by = posArray[i3 + 1];
       const bz = posArray[i3 + 2];
@@ -121,7 +116,6 @@ function Particles() {
     }
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
 
-    // Gentle size breathing
     const mat = pointsRef.current.material as THREE.PointsMaterial;
     mat.size = 0.12 + Math.sin(time * 0.8) * 0.02;
     mat.opacity = 0.35 + Math.sin(time * 0.6) * 0.08;
@@ -138,7 +132,7 @@ function Particles() {
         transparent
         alphaTest={0.001}
         opacity={0.4}
-        color="#60a5fa"
+        color={color}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
       />
@@ -154,7 +148,7 @@ function getSweepInitialData(count: number) {
   }));
 }
 
-function LightSweeps() {
+function LightSweeps({ color }: { color: string }) {
   const sweepRef = useRef<THREE.Group>(null);
   const sweepData = useMemo(() => getSweepInitialData(3), []);
 
@@ -165,14 +159,11 @@ function LightSweeps() {
     sweepRef.current.children.forEach((child, i) => {
       const speed = 0.3 + i * 0.08;
       child.position.z += speed;
-
-      // Gentle sine wobble on X axis
       child.position.x += Math.sin(time * 0.5 + sweepData[i].phase) * 0.02;
 
-      // Smooth opacity fade based on Z position (fade in/out at boundaries)
       const mat = (child as THREE.Mesh).material as THREE.MeshBasicMaterial;
-      const zNorm = (child.position.z + 50) / 80; // 0 at z=-50, 1 at z=30
-      mat.opacity = 0.35 * Math.sin(zNorm * Math.PI); // bell curve fade
+      const zNorm = (child.position.z + 50) / 80;
+      mat.opacity = 0.35 * Math.sin(zNorm * Math.PI);
 
       if (child.position.z > 30) {
         child.position.z = -50;
@@ -191,7 +182,7 @@ function LightSweeps() {
         >
           <planeGeometry args={[0.05, 10]} />
           <meshBasicMaterial
-            color="#60a5fa"
+            color={color}
             transparent
             opacity={0}
             blending={THREE.AdditiveBlending}
@@ -202,19 +193,28 @@ function LightSweeps() {
   );
 }
 
-function Scene() {
-  const { camera } = useThree();
-  const groupRef = useRef<THREE.Group>(null);
+interface SceneProps {
+  isDark: boolean;
+}
 
-  // Use springs/lerp for smooth interaction mapping
+function Scene({ isDark }: SceneProps) {
+  const groupRef = useRef<THREE.Group>(null);
   const smoothMouseX = useRef(new THREE.Vector2(0, 0));
   const smoothScroll = useRef(0);
 
+  const colors = {
+    bg: isDark ? '#020617' : '#f8fafc',
+    grid: isDark ? '#60a5fa' : '#0ea5e9',
+    ambient: isDark ? '#ffffff' : '#fef2f2',
+    point1: isDark ? '#3b82f6' : '#ec4899',
+    point2: isDark ? '#60a5fa' : '#06b6d4',
+    reflector: isDark ? '#020617' : '#ffffff',
+  };
+
   useFrame((state) => {
     if (!groupRef.current) return;
-    const { pointer } = state;
+    const { pointer, camera } = state;
 
-    // Responsive mouse smoothing — faster follow for fluid feel
     smoothMouseX.current.x += (pointer.x - smoothMouseX.current.x) * 0.07;
     smoothMouseX.current.y += (pointer.y - smoothMouseX.current.y) * 0.07;
 
@@ -222,40 +222,36 @@ function Scene() {
     smoothScroll.current += (scrollY - smoothScroll.current) * 0.06;
     const scrollTilt = smoothScroll.current * 0.0004;
 
-    // Reduced rotation range for subtler, less disorienting movement
     const targetX = (smoothMouseX.current.y * Math.PI) / 12 + 0.3 + scrollTilt;
     const targetY = (smoothMouseX.current.x * Math.PI) / 14;
 
-    // Faster rotation lerp for snappier response
     groupRef.current.rotation.x +=
       (targetX - groupRef.current.rotation.x) * 0.06;
     groupRef.current.rotation.y +=
       (targetY - groupRef.current.rotation.y) * 0.06;
 
-    /* eslint-disable react-hooks/immutability */
     camera.position.x +=
       (smoothMouseX.current.x * 2.5 - camera.position.x) * 0.05;
     camera.position.z = 10 + smoothScroll.current * 0.002;
     camera.lookAt(0, -1, -8);
-    /* eslint-enable react-hooks/immutability */
   });
 
   return (
     <>
-      <color attach="background" args={['#020617']} />
-      <fog attach="fog" args={['#020617', 5, 45]} />
-      <ambientLight intensity={0.2} color="#ffffff" />
+      <color attach="background" args={[colors.bg]} />
+      <fog attach="fog" args={[colors.bg, 5, 45]} />
+      <ambientLight intensity={isDark ? 0.2 : 0.8} color={colors.ambient} />
 
       <pointLight
         position={[0, -2, -15]}
-        intensity={25}
-        color="#3b82f6"
+        intensity={isDark ? 25 : 40}
+        color={colors.point1}
         distance={40}
       />
       <pointLight
         position={[0, 5, -10]}
-        intensity={10}
-        color="#60a5fa"
+        intensity={isDark ? 10 : 20}
+        color={colors.point2}
         distance={30}
       />
 
@@ -263,17 +259,16 @@ function Scene() {
         <Stars
           radius={100}
           depth={50}
-          count={4000}
-          factor={4}
-          saturation={0}
+          count={isDark ? 4000 : 1500}
+          factor={isDark ? 4 : 2}
+          saturation={isDark ? 0 : 0.8}
           fade
           speed={1}
         />
 
-        <Particles />
-        <LightSweeps />
+        {isDark && <Particles color={colors.grid} />}
+        {isDark && <LightSweeps color={colors.grid} />}
 
-        {/* The Grid - Increased Z-offset and adjusted thickness to prevent blinking */}
         <Grid
           position={[0, -2.99, 0]}
           args={[100, 100]}
@@ -281,7 +276,7 @@ function Scene() {
           cellThickness={0}
           sectionSize={3.5}
           sectionThickness={1.0}
-          sectionColor="#60a5fa"
+          sectionColor={colors.grid}
           fadeDistance={40}
           fadeStrength={1}
           infiniteGrid
@@ -293,12 +288,12 @@ function Scene() {
             blur={[400, 100]}
             resolution={512}
             mixBlur={1}
-            mixStrength={25}
+            mixStrength={isDark ? 25 : 10}
             roughness={0.8}
             depthScale={1}
             minDepthThreshold={0.4}
             maxDepthThreshold={1.2}
-            color="#020617"
+            color={colors.reflector}
             metalness={0.2}
             mirror={1}
           />
@@ -310,61 +305,68 @@ function Scene() {
 
 export function InteractiveGrid() {
   const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
+  if (!mounted) {
+    return (
+      <div className="fixed inset-0 -z-10 bg-[#f8fafc] dark:bg-[#020617]" />
+    );
+  }
+
   return (
     <AnimatePresence>
-      {mounted && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{
-            duration: 2,
-            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{
+          duration: 1.5,
+          ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+        }}
+        className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background"
+      >
+        {/* Subtle Noise Texture Overlay */}
+        <div
+          className="absolute inset-0 z-10 opacity-[0.03] pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           }}
-          className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#020617]"
-        >
-          {/* Subtle Noise Texture Overlay */}
-          <div
-            className="absolute inset-0 z-10 opacity-[0.03] pointer-events-none"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            }}
-          />
+        />
 
-          {/* R3F WebGL Canvas - Optimized for stability */}
-          <div className="absolute inset-0" aria-hidden="true">
-            <Canvas
-              camera={{ position: [0, 0, 10], fov: 55 }}
-              dpr={[1, 2]}
-              gl={{
-                antialias: true,
-                alpha: false,
-                stencil: false,
-                depth: true,
-                powerPreference: 'high-performance',
-              }}
-            >
-              <Scene />
-            </Canvas>
-          </div>
-
-          {/* Vignette & Soft Gradient Masks */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(circle at 50% 50%, transparent 40%, rgba(2,6,23,0.95) 100%)',
+        {/* R3F WebGL Canvas */}
+        <div className="absolute inset-0" aria-hidden="true">
+          <Canvas
+            camera={{ position: [0, 0, 10], fov: 55 }}
+            dpr={[1, 2]}
+            gl={{
+              antialias: true,
+              alpha: false,
+              stencil: false,
+              depth: true,
+              powerPreference: 'high-performance',
             }}
-            aria-hidden="true"
-          />
-        </motion.div>
-      )}
+          >
+            <Scene isDark={isDark} />
+          </Canvas>
+        </div>
+
+        {/* Vignette & Soft Gradient Masks */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: isDark
+              ? 'radial-gradient(circle at 50% 50%, transparent 40%, rgba(2,6,23,0.95) 100%)'
+              : 'radial-gradient(circle at 50% 50%, rgba(254,226,226,0.15) 0%, rgba(224,242,254,0.15) 50%, rgba(248,250,252,0.95) 100%)',
+          }}
+          aria-hidden="true"
+        />
+      </motion.div>
     </AnimatePresence>
   );
 }
