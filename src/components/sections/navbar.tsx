@@ -13,9 +13,10 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { NAV_LINKS, PERSONAL } from '@/src/data/portfolio';
+import { ColorPicker } from '@/src/components/color-picker';
 import { ThemeToggle } from '@/src/components/theme-toggle';
 
-export function Navbar() {
+export function Navbar(): React.JSX.Element {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -92,6 +93,7 @@ export function Navbar() {
             <span className="text-xs font-medium text-body">Available</span>
           </div>
 
+          <ColorPicker />
           <ThemeToggle />
 
           <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
@@ -121,6 +123,11 @@ export function Navbar() {
               <div className="mb-6 flex items-center gap-2 rounded-full border border-border-color px-3 py-1.5 w-fit">
                 <span className="status-dot size-2 rounded-full bg-green-500" />
                 <span className="text-xs font-medium text-body">Available</span>
+              </div>
+
+              {/* Mobile color picker */}
+              <div className="mb-6">
+                <ColorPicker />
               </div>
 
               <ul className="flex flex-col gap-2">

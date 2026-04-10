@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export function BackToTop() {
+export function BackToTop(): React.JSX.Element {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

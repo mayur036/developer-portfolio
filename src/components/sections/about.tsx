@@ -21,7 +21,7 @@ import {
 } from '@/src/data/portfolio';
 import type { HeroStat } from '@/src/types/portfolio';
 
-export function About() {
+export function About(): React.JSX.Element {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -58,6 +58,7 @@ export function About() {
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
+          id="about-title"
           sectionNumber="002 — About"
           title="Get to Know Me"
           subtitle="A developer who cares about craft, performance, and the people who use the things I build."

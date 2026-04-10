@@ -11,7 +11,7 @@ import {
 import { SectionHeading } from '@/src/components/section-heading';
 import { EXPERIENCE } from '@/src/data/portfolio';
 
-export function Experience() {
+export function Experience(): React.JSX.Element {
   return (
     <section
       id="experience"
@@ -20,6 +20,7 @@ export function Experience() {
     >
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <SectionHeading
+          id="experience-title"
           sectionNumber="003.5 — Experience"
           title="Where I've Been"
           subtitle="The teams and challenges that shaped my approach to building software."

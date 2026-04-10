@@ -10,10 +10,10 @@
   --color-surface: var(--surface);
   --color-surface-alt: var(--surface-alt);
   --color-accent: var(--accent);
-  --color-accent-secondary: var(--accent-secondary);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent-muted: var(--accent-muted);
   --color-accent-glow: var(--accent-glow);
+  --color-accent-deep: var(--accent-deep);
   --color-heading: var(--heading);
   --color-body: var(--body);
   --color-muted-text: var(--muted-text);
@@ -61,6 +61,7 @@
   --accent-foreground: #ffffff;
   --accent-muted: #dbeafe;
   --accent-glow: rgba(59, 130, 246, 0.15);
+  --accent-deep: #2563eb;
   --heading: #0f172a;
   --body: #334155;
   --muted-text: #94a3b8;
@@ -101,6 +102,7 @@
   --accent-foreground: #020617;
   --accent-muted: #1e3a5f;
   --accent-glow: rgba(96, 165, 250, 0.15);
+  --accent-deep: #3b82f6;
   --heading: #f1f5f9;
   --body: #cbd5e1;
   --muted-text: #64748b;
@@ -185,7 +187,7 @@
 
 /* ---- Gradient text utility ---- */
 .gradient-text {
-  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -230,7 +232,7 @@
 }
 
 .card-hover-glow:hover::before {
-  background: linear-gradient(135deg, var(--accent), #3b82f6);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
 }
 
 .card-hover-glow:hover {
@@ -328,7 +330,7 @@
 
 /* ---- Gradient border button ---- */
 .gradient-btn {
-  background: linear-gradient(135deg, var(--accent), #2563eb);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
   color: white;
   transition: all 300ms ease;
 }

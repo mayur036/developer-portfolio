@@ -1,0 +1,1 @@
+- [Perf & SEO Audit April 2026](project_perf_audit_2026_04.md) — THREE.js lazy-load, dynamic section imports, WebGL tuning, JSON-LD fixes, aria-labelledby corrections

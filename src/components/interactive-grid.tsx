@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useRef, useMemo, useState } from 'react';
+import { useEffect, useRef, useMemo, useState, useCallback } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Grid, MeshReflectorMaterial, Stars } from '@react-three/drei';
@@ -10,7 +10,7 @@ import { useTheme } from 'next-themes';
 /**
  * Creates a simple circular texture for glowing points.
  */
-function createCircleTexture() {
+function createCircleTexture(): THREE.CanvasTexture | null {
   const canvas = document.createElement('canvas');
   canvas.width = 64;
   canvas.height = 64;
@@ -30,7 +30,11 @@ function createCircleTexture() {
   return texture;
 }
 
-function getParticleInitialData(count: number) {
+function getParticleInitialData(count: number): {
+  pos: Float32Array;
+  vel: Float32Array;
+  ph: Float32Array;
+} {
   const pos = new Float32Array(count * 3);
   const vel = new Float32Array(count * 3);
   const ph = new Float32Array(count);
@@ -48,8 +52,10 @@ function getParticleInitialData(count: number) {
   return { pos, vel, ph };
 }
 
-function Particles({ color }: { color: string }) {
-  const particleCount = 200;
+/** Reduced particle count from 200 to 120 to lower GPU/CPU work */
+const PARTICLE_COUNT = 120;
+
+function Particles({ color }: { color: string }): React.JSX.Element {
   const { viewport, mouse } = useThree();
   const circleTexture = useMemo(() => createCircleTexture(), []);
 
@@ -57,7 +63,7 @@ function Particles({ color }: { color: string }) {
     pos: positions,
     vel: velocities,
     ph: phases,
-  } = useMemo(() => getParticleInitialData(particleCount), [particleCount]);
+  } = useMemo(() => getParticleInitialData(PARTICLE_COUNT), []);
 
   const pointsRef = useRef<THREE.Points>(null);
   const smoothMouse = useRef(new THREE.Vector2(0, 0));
@@ -76,7 +82,7 @@ function Particles({ color }: { color: string }) {
     const mouseX = smoothMouse.current.x;
     const mouseY = smoothMouse.current.y;
 
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
       const i3 = i * 3;
       const phase = phases[i];
 
@@ -140,7 +146,11 @@ function Particles({ color }: { color: string }) {
   );
 }
 
-function getSweepInitialData(count: number) {
+function getSweepInitialData(count: number): Array<{
+  x: number;
+  z: number;
+  phase: number;
+}> {
   return Array.from({ length: count }).map(() => ({
     x: (Math.random() - 0.5) * 40,
     z: (Math.random() - 0.5) * -50,
@@ -148,7 +158,7 @@ function getSweepInitialData(count: number) {
   }));
 }
 
-function LightSweeps({ color }: { color: string }) {
+function LightSweeps({ color }: { color: string }): React.JSX.Element {
   const sweepRef = useRef<THREE.Group>(null);
   const sweepData = useMemo(() => getSweepInitialData(3), []);
 
@@ -197,7 +207,7 @@ interface SceneProps {
   isDark: boolean;
 }
 
-function Scene({ isDark }: SceneProps) {
+function Scene({ isDark }: SceneProps): React.JSX.Element {
   const groupRef = useRef<THREE.Group>(null);
   const smoothMouseX = useRef(new THREE.Vector2(0, 0));
   const smoothScroll = useRef(0);
@@ -256,10 +266,11 @@ function Scene({ isDark }: SceneProps) {
       />
 
       <group ref={groupRef}>
+        {/* Reduced star counts to lower GPU work */}
         <Stars
           radius={100}
           depth={50}
-          count={isDark ? 4000 : 1500}
+          count={isDark ? 2500 : 1000}
           factor={isDark ? 4 : 2}
           saturation={isDark ? 0 : 0.8}
           fade
@@ -282,11 +293,12 @@ function Scene({ isDark }: SceneProps) {
           infiniteGrid
         />
 
+        {/* Reduced reflector resolution from 512 to 256 for performance */}
         <mesh position={[0, -3.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[100, 100]} />
           <MeshReflectorMaterial
             blur={[400, 100]}
-            resolution={512}
+            resolution={256}
             mixBlur={1}
             mixStrength={isDark ? 25 : 10}
             roughness={0.8}
@@ -303,19 +315,34 @@ function Scene({ isDark }: SceneProps) {
   );
 }
 
-export function InteractiveGrid() {
+export function InteractiveGrid(): React.JSX.Element {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
+  /**
+   * Use requestIdleCallback (with requestAnimationFrame fallback) to defer
+   * WebGL canvas mounting until after the browser has finished critical work.
+   * This keeps the main thread free for LCP rendering and interaction.
+   */
+  const scheduleMount = useCallback(() => {
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(() => setMounted(true), { timeout: 2000 });
+    } else {
+      requestAnimationFrame(() => setMounted(true));
+    }
   }, []);
+
+  useEffect(() => {
+    scheduleMount();
+  }, [scheduleMount]);
 
   if (!mounted) {
     return (
-      <div className="fixed inset-0 -z-10 bg-[#f8fafc] dark:bg-[#020617]" />
+      <div
+        className="fixed inset-0 -z-10 bg-[#f8fafc] dark:bg-[#020617]"
+        aria-hidden="true"
+      />
     );
   }
 
@@ -330,6 +357,7 @@ export function InteractiveGrid() {
           ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
         }}
         className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background"
+        aria-hidden="true"
       >
         {/* Subtle Noise Texture Overlay */}
         <div
@@ -340,12 +368,12 @@ export function InteractiveGrid() {
         />
 
         {/* R3F WebGL Canvas */}
-        <div className="absolute inset-0" aria-hidden="true">
+        <div className="absolute inset-0">
           <Canvas
             camera={{ position: [0, 0, 10], fov: 55 }}
-            dpr={[1, 2]}
+            dpr={[1, 1.5]}
             gl={{
-              antialias: true,
+              antialias: false,
               alpha: false,
               stencil: false,
               depth: true,
@@ -364,7 +392,6 @@ export function InteractiveGrid() {
               ? 'radial-gradient(circle at 50% 50%, transparent 40%, rgba(2,6,23,0.95) 100%)'
               : 'radial-gradient(circle at 50% 50%, rgba(254,226,226,0.15) 0%, rgba(224,242,254,0.15) 50%, rgba(248,250,252,0.95) 100%)',
           }}
-          aria-hidden="true"
         />
       </motion.div>
     </AnimatePresence>

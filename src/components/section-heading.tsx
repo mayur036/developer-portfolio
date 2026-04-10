@@ -16,7 +16,7 @@ export function SectionHeading({
   sectionNumber,
   id,
   align = 'left',
-}: SectionHeadingProps) {
+}: SectionHeadingProps): React.JSX.Element {
   const containerVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {

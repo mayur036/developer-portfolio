@@ -8,6 +8,6 @@ const CustomCursorInner = dynamic(
   { ssr: false },
 );
 
-export function ClientCursor() {
+export function ClientCursor(): React.JSX.Element {
   return <CustomCursorInner />;
 }

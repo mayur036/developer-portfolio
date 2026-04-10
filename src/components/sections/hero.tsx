@@ -13,11 +13,39 @@ import {
 } from '@/components/ui/tooltip';
 import { HERO_STATS, PERSONAL } from '@/src/data/portfolio';
 
-export function Hero() {
+/**
+ * Animation variants are defined outside the component to avoid
+ * re-creating objects on every render, reducing GC pressure and TBT.
+ */
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+} as const;
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+    },
+  },
+} as const;
+
+const springConfig = { stiffness: 100, damping: 30, mass: 0.5 } as const;
+
+export function Hero(): React.JSX.Element {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { stiffness: 100, damping: 30, mass: 0.5 };
   const springX = useSpring(mouseX, springConfig);
   const springY = useSpring(mouseY, springConfig);
 
@@ -25,44 +53,22 @@ export function Hero() {
   const rotateY = useTransform(springX, [-0.5, 0.5], [-10, 10]);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e: MouseEvent): void => {
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       mouseX.set(clientX / innerWidth - 0.5);
       mouseY.set(clientY / innerHeight - 0.5);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-      },
-    },
-  };
 
   return (
     <section
       id="home"
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      aria-label="Introduction"
     >
       <motion.div
         className="relative z-10 mx-auto w-full max-w-4xl px-4 sm:px-6"
@@ -81,12 +87,15 @@ export function Hero() {
               variant="outline"
               className="gap-2 rounded-full border-border-color bg-surface/60 px-4 py-1.5 text-xs font-medium text-body backdrop-blur-sm"
             >
-              <span className="status-dot size-1.5 rounded-full bg-green-500" />
+              <span
+                className="status-dot size-1.5 rounded-full bg-green-500"
+                aria-hidden="true"
+              />
               {PERSONAL.badge}
             </Badge>
           </motion.div>
 
-          {/* Name */}
+          {/* Name -- this is the LCP element, reduced animation delay */}
           <motion.h1
             className="text-fluid-xl mt-6 font-heading font-bold tracking-tight text-heading"
             variants={itemVariants}
@@ -121,7 +130,7 @@ export function Hero() {
                         ?.scrollIntoView({ behavior: 'smooth' })
                     }
                   >
-                    <FolderOpen className="mr-2 size-4" />
+                    <FolderOpen className="mr-2 size-4" aria-hidden="true" />
                     View Projects
                   </Button>
                 }
@@ -141,7 +150,7 @@ export function Hero() {
                     aria-label="View and download my resume"
                     render={
                       <a href={PERSONAL.resumeUrl}>
-                        <Download className="mr-2 size-4" />
+                        <Download className="mr-2 size-4" aria-hidden="true" />
                         View Resume
                       </a>
                     }
@@ -158,6 +167,7 @@ export function Hero() {
           <motion.div
             className="mt-16 flex flex-wrap justify-center gap-8 sm:gap-12"
             variants={itemVariants}
+            aria-label="Key statistics"
           >
             {HERO_STATS.map((stat, i) => (
               <motion.div
@@ -166,8 +176,8 @@ export function Hero() {
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{
-                  delay: 0.8 + i * 0.15,
-                  duration: 0.8,
+                  delay: 0.5 + i * 0.1,
+                  duration: 0.6,
                   ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
                 }}
               >
@@ -194,6 +204,7 @@ export function Hero() {
           repeat: Infinity,
           repeatType: 'reverse',
         }}
+        aria-hidden="true"
       >
         <ArrowDown className="size-5 text-muted-text" />
       </motion.div>

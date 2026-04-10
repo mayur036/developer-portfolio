@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { DM_Sans, JetBrains_Mono, Sora } from 'next/font/google';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import Script from 'next/script';
 
 import { ThemeProvider } from '@/src/components/theme-provider';
 import { ClientCursor } from '@/src/components/client-cursor';
@@ -30,7 +29,10 @@ const jetbrainsMono = JetBrains_Mono({
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ronakkapadi.dev';
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+    { media: '(prefers-color-scheme: dark)', color: '#020617' },
+  ],
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -47,17 +49,22 @@ export const metadata: Metadata = {
     'Software Developer',
     'AI Solutions',
     'Business Software',
-    'Next.js 19',
+    'Next.js',
     'React',
     'TypeScript',
     'Lead Technology Architect',
     'Software Architect',
     PERSONAL.name,
-    'Claude AI',
-    'Antigravity',
+    'Full Stack Developer',
+    'Web Application Development',
+    'Node.js',
+    'AWS',
   ],
   authors: [{ name: PERSONAL.name, url: baseUrl }],
   creator: PERSONAL.name,
+  alternates: {
+    canonical: baseUrl,
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -70,7 +77,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: PERSONAL.name,
+        alt: `${PERSONAL.name} — ${PERSONAL.role} Portfolio`,
       },
     ],
   },
@@ -79,7 +86,7 @@ export const metadata: Metadata = {
     title: `${PERSONAL.name} — ${PERSONAL.role}`,
     description: PERSONAL.tagline,
     images: ['/og-image.png'],
-    creator: '@ronakkapadi', // Adjusted for expected handle
+    creator: '@ronakkapadi',
   },
   robots: {
     index: true,
@@ -98,30 +105,66 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: PERSONAL.name,
-    jobTitle: PERSONAL.role,
-    url: baseUrl,
-    sameAs: [
-      'https://github.com/ronakkapadi22',
-      'https://linkedin.com/in/ronakkapadi',
-    ],
-    description: ABOUT.bio,
-  };
+}>): React.JSX.Element {
+  /**
+   * Structured data using JSON-LD for rich search results.
+   * Includes Person schema with professional details and a WebSite schema
+   * for site-level search engine understanding.
+   *
+   * Using a raw <script> tag instead of next/script for static JSON-LD
+   * avoids the Script component's runtime overhead and deferred loading
+   * behavior, which is unnecessary for inline structured data.
+   */
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: PERSONAL.name,
+      jobTitle: PERSONAL.role,
+      url: baseUrl,
+      email: PERSONAL.email,
+      sameAs: [
+        'https://github.com/ronakkapadi22',
+        'https://linkedin.com/in/ronakkapadi',
+      ],
+      description: ABOUT.bio,
+      knowsAbout: [
+        'JavaScript',
+        'TypeScript',
+        'React',
+        'Next.js',
+        'Node.js',
+        'AWS',
+        'AI Solutions',
+        'Software Architecture',
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: `${PERSONAL.name} Portfolio`,
+      url: baseUrl,
+      description: PERSONAL.tagline,
+      author: {
+        '@type': 'Person',
+        name: PERSONAL.name,
+      },
+    },
+  ];
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+          }}
+        />
+      </head>
       <body
         className={`${sora.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        <Script
-          id="json-ld"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
         <ThemeProvider>
           <TooltipProvider>
             <ClientCursor />

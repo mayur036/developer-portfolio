@@ -42,6 +42,7 @@ export function Services(): React.JSX.Element {
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeading
+          id="services-title"
           sectionNumber="004 — Services"
           title="What I Offer"
           subtitle="High-end business solutions tailored to your needs — from idea to scalable product."
