@@ -1,10 +1,18 @@
 'use client';
 
 import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-export function CustomCursor() {
+/**
+ * Interactive selectors that trigger the "hover" cursor state.
+ * Using a constant outside the component avoids re-creation per render.
+ */
+const INTERACTIVE_SELECTOR =
+  'a, button, [role="button"], input, textarea, select, .social-card, .card-hover-glow, .glow-border, .gradient-btn, .ghost-btn';
+
+export function CustomCursor(): React.JSX.Element | null {
   const [isVisible, setIsVisible] = useState(false);
+  const isHoveringRef = useRef(false);
   const [isHovering, setIsHovering] = useState(false);
 
   const cursorX = useMotionValue(-100);
@@ -24,34 +32,36 @@ export function CustomCursor() {
       'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    /**
+     * Combine mousemove and hover detection into a single listener to reduce
+     * the number of event handlers and avoid separate mouseover events which
+     * fire on every element change. This reduces main-thread work (TBT).
+     */
+    const handleMouseMove = (e: MouseEvent): void => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
-    };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
-
-    // Detect hoverable elements
-    const handleElementHover = (e: MouseEvent) => {
+      // Check hover state inline during mousemove instead of a separate mouseover
       const target = e.target as HTMLElement;
-      const isInteractive = target.closest(
-        'a, button, [role="button"], input, textarea, select, .social-card, .card-hover-glow, .glow-border, .gradient-btn, .ghost-btn',
-      );
-      setIsHovering(!!isInteractive);
+      const hovering = !!target.closest(INTERACTIVE_SELECTOR);
+      if (hovering !== isHoveringRef.current) {
+        isHoveringRef.current = hovering;
+        setIsHovering(hovering);
+      }
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
+    const handleMouseLeave = (): void => setIsVisible(false);
+    const handleMouseEnter = (): void => setIsVisible(true);
+
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
-    document.addEventListener('mouseover', handleElementHover);
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
-      document.removeEventListener('mouseover', handleElementHover);
     };
   }, [cursorX, cursorY, isVisible]);
 
@@ -76,6 +86,7 @@ export function CustomCursor() {
           scale: isHovering ? 1.4 : 1,
         }}
         transition={{ duration: 0.2 }}
+        aria-hidden="true"
       />
 
       {/* Outer ring circle */}
@@ -95,6 +106,7 @@ export function CustomCursor() {
           borderWidth: isHovering ? 2 : 1,
         }}
         transition={{ duration: 0.25, ease: 'easeOut' }}
+        aria-hidden="true"
       />
     </>
   );

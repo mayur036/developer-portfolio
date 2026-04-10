@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { SectionHeading } from '@/src/components/section-heading';
 import { SKILLS } from '@/src/data/portfolio';
 
-export function Skills() {
+export function Skills(): React.JSX.Element {
   const containerVariants = {
     hidden: {},
     visible: {
@@ -36,6 +36,7 @@ export function Skills() {
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeading
+          id="skills-title"
           sectionNumber="003.7 — Skills"
           title="Skills & Tools"
           subtitle="Technologies I work with daily to build reliable, scalable software."

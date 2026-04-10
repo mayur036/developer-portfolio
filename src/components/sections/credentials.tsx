@@ -6,7 +6,7 @@ import { Award, ExternalLink } from 'lucide-react';
 import { SectionHeading } from '@/src/components/section-heading';
 import { CREDENTIALS } from '@/src/data/portfolio';
 
-export function Credentials() {
+export function Credentials(): React.JSX.Element {
   return (
     <section
       id="credentials"
@@ -15,6 +15,7 @@ export function Credentials() {
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
+          id="credentials-title"
           sectionNumber="004 — Credentials"
           title="Certifications & Achievements"
           subtitle="Recognition and continuous learning milestones."

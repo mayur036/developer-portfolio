@@ -14,7 +14,7 @@ import {
 import { SectionHeading } from '@/src/components/section-heading';
 import { SOCIAL_LINKS } from '@/src/data/portfolio';
 
-export function Contact() {
+export function Contact(): React.JSX.Element {
   return (
     <section
       id="contact"
@@ -23,6 +23,7 @@ export function Contact() {
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
+          id="contact-title"
           sectionNumber="005 — Contact"
           title="Let's Build Something Together"
           subtitle="I'm always open to discussing new projects, creative ideas, or opportunities."

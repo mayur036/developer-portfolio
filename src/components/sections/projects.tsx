@@ -5,7 +5,7 @@ import { ProjectCard } from './projects/project-card';
 import { SectionHeading } from '@/src/components/section-heading';
 import { PROJECTS } from '@/src/data/portfolio';
 
-export function Projects() {
+export function Projects(): React.JSX.Element {
   return (
     <section
       id="projects"
@@ -14,6 +14,7 @@ export function Projects() {
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
+          id="projects-title"
           sectionNumber="003 — Work"
           title="Featured Projects"
           subtitle="A selection of problems I have enjoyed solving."
