@@ -327,14 +327,18 @@ export function InteractiveGrid(): React.JSX.Element {
    */
   const scheduleMount = useCallback(() => {
     if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(() => setMounted(true), { timeout: 2000 });
+      const id = window.requestIdleCallback(() => setMounted(true), {
+        timeout: 2000,
+      });
+      return () => window.cancelIdleCallback(id);
     } else {
-      requestAnimationFrame(() => setMounted(true));
+      const id = requestAnimationFrame(() => setMounted(true));
+      return () => cancelAnimationFrame(id);
     }
   }, []);
 
   useEffect(() => {
-    scheduleMount();
+    return scheduleMount();
   }, [scheduleMount]);
 
   if (!mounted) {

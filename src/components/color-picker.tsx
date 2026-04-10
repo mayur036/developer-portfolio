@@ -102,7 +102,6 @@ export function ColorPicker(): React.JSX.Element {
         {isOpen && (
           <motion.div
             className="absolute right-0 top-full z-50 mt-2 rounded-xl border border-border-color bg-surface/95 p-3 shadow-lg backdrop-blur-xl"
-            role="listbox"
             aria-label="Accent color options"
             {...PANEL_ANIMATION}
             transition={PANEL_TRANSITION}
@@ -123,9 +122,8 @@ export function ColorPicker(): React.JSX.Element {
                         render={
                           <button
                             type="button"
-                            role="option"
-                            aria-label={preset.name}
-                            aria-selected={isSelected}
+                            aria-label={`${preset.name}${isSelected ? ' (selected)' : ''}`}
+                            aria-pressed={isSelected}
                             className="relative flex size-6 items-center justify-center rounded-full outline-none transition-transform duration-150 hover:scale-110 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
                             style={{
                               backgroundColor:

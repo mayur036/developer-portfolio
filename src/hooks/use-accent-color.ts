@@ -233,7 +233,8 @@ export function useAccentColor(): AccentColorHook {
   useEffect(() => {
     function handleStorage(event: StorageEvent): void {
       if (event.key === STORAGE_KEY && event.newValue) {
-        setAccentId(event.newValue);
+        const isValid = ACCENT_PRESETS.some((p) => p.id === event.newValue);
+        setAccentId(isValid ? event.newValue : DEFAULT_ACCENT);
       }
     }
 
@@ -242,8 +243,10 @@ export function useAccentColor(): AccentColorHook {
   }, []);
 
   const setAccentColor = useCallback((id: string) => {
-    localStorage.setItem(STORAGE_KEY, id);
-    setAccentId(id);
+    const isValid = ACCENT_PRESETS.some((p) => p.id === id);
+    const safeId = isValid ? id : DEFAULT_ACCENT;
+    localStorage.setItem(STORAGE_KEY, safeId);
+    setAccentId(safeId);
   }, []);
 
   return {

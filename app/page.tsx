@@ -10,8 +10,9 @@ import { LazyInteractiveGrid } from '@/src/components/lazy-interactive-grid';
  * This reduces TBT because the browser parses/evaluates less JS upfront.
  * Hero and Navbar stay statically imported because they are above the fold.
  *
- * React.lazy() is the idiomatic App Router pattern for Server Components;
- * next/dynamic is designed for Pages Router and carries extra overhead.
+ * Both React.lazy() and next/dynamic() work in the App Router.
+ * React.lazy() is used here as it is sufficient for pure client components and
+ * avoids the extra next/dynamic wrapper overhead for these sections.
  */
 const About = lazy(() =>
   import('@/src/components/sections/about').then((mod) => ({
