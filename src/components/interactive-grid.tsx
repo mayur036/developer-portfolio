@@ -190,7 +190,7 @@ function LightSweeps({ color }: { color: string }): React.JSX.Element {
           position={[pos.x, -2.98, pos.z]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
-          <planeGeometry args={[0.05, 10]} />
+          <planeGeometry args={[0.025, 10]} />
           <meshBasicMaterial
             color={color}
             transparent
@@ -203,11 +203,38 @@ function LightSweeps({ color }: { color: string }): React.JSX.Element {
   );
 }
 
-interface SceneProps {
-  isDark: boolean;
+/**
+ * Reads the `--accent` CSS variable from <html> and keeps it in sync
+ * with theme toggles (class change) and accent picker changes (style change).
+ */
+function useAccentColor(fallback: string): string {
+  const [color, setColor] = useState(fallback);
+
+  useEffect(() => {
+    const read = (): void => {
+      const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue('--accent')
+        .trim();
+      if (raw) setColor(raw);
+    };
+    read();
+    const observer = new MutationObserver(read);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'style'],
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  return color;
 }
 
-function Scene({ isDark }: SceneProps): React.JSX.Element {
+interface SceneProps {
+  isDark: boolean;
+  accentColor: string;
+}
+
+function Scene({ isDark, accentColor }: SceneProps): React.JSX.Element {
   const groupRef = useRef<THREE.Group>(null);
   const smoothMouseX = useRef(new THREE.Vector2(0, 0));
   const smoothScroll = useRef(0);
@@ -278,7 +305,7 @@ function Scene({ isDark }: SceneProps): React.JSX.Element {
         />
 
         {isDark && <Particles color={colors.grid} />}
-        {isDark && <LightSweeps color={colors.grid} />}
+        {isDark && <LightSweeps color={accentColor} />}
 
         <Grid
           position={[0, -2.99, 0]}
@@ -319,6 +346,7 @@ export function InteractiveGrid(): React.JSX.Element {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
+  const accentColor = useAccentColor(isDark ? '#60a5fa' : '#3b82f6');
 
   /**
    * Use requestIdleCallback (with requestAnimationFrame fallback) to defer
@@ -384,7 +412,7 @@ export function InteractiveGrid(): React.JSX.Element {
               powerPreference: 'high-performance',
             }}
           >
-            <Scene isDark={isDark} />
+            <Scene isDark={isDark} accentColor={accentColor} />
           </Canvas>
         </div>
 
