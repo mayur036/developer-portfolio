@@ -142,8 +142,8 @@
     @apply bg-background text-body;
     /* Prevent horizontal overflow from off-screen framer-motion initial states
        (e.g. x: -40 / x: 30 in experience, credentials, contact sections).
-       Using `clip` instead of `hidden` so it does not create a new scroll
-       container — which would break `position: sticky` on the navbar. */
+       Using `clip` instead of `hidden` so it does not create an unnecessary
+       horizontal scroll container while still preventing sideways overflow. */
     overflow-x: clip;
     transition:
       background-color 400ms ease,
