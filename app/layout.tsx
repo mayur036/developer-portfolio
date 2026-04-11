@@ -4,6 +4,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { ThemeProvider } from '@/src/components/theme-provider';
 import { ClientCursor } from '@/src/components/client-cursor';
+import { ScrollIndicator } from '@/src/components/scroll-indicator';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ABOUT, PERSONAL } from '@/src/data/portfolio';
 import './globals.css';
@@ -168,6 +169,7 @@ export default function RootLayout({
         <ThemeProvider>
           <TooltipProvider>
             <ClientCursor />
+            <ScrollIndicator />
             {children}
             <SpeedInsights />
           </TooltipProvider>
