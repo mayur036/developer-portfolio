@@ -9,12 +9,12 @@ import {
 } from '@/components/ui/tooltip';
 import { PERSONAL, SOCIAL_LINKS } from '@/src/data/portfolio';
 
-export function Footer() {
+export function Footer(): React.JSX.Element {
   const year = new Date().getFullYear();
 
   return (
     <motion.footer
-      className="border-t border-border-color bg-surface/30 backdrop-blur-sm py-10"
+      className="border-t border-border-color bg-surface/30 py-8 backdrop-blur-sm sm:py-10"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -24,7 +24,7 @@ export function Footer() {
       }}
       aria-label="Portfolio Footer"
     >
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 sm:flex-row sm:justify-between sm:px-6">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 sm:flex-row sm:justify-between sm:gap-6 sm:px-6">
         {/* Brand */}
         <div
           className="text-center sm:text-left"
@@ -44,7 +44,7 @@ export function Footer() {
 
         {/* Social icons */}
         <div
-          className="flex items-center gap-4"
+          className="flex items-center gap-3 sm:gap-4"
           role="list"
           aria-label="Social media profiles"
         >
@@ -60,7 +60,7 @@ export function Footer() {
                       target="_blank"
                       rel="noopener noreferrer"
                       role="listitem"
-                      className="flex size-9 items-center justify-center rounded-lg border border-border-color text-muted-text transition-all hover:border-accent hover:text-accent hover:shadow-[0_0_15px_var(--accent-glow)]"
+                      className="flex size-11 items-center justify-center rounded-lg border border-border-color text-muted-text transition-all hover:border-accent hover:text-accent hover:shadow-[0_0_15px_var(--accent-glow)] sm:size-9"
                       aria-label={`Visit my ${link.label} profile`}
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}

@@ -31,18 +31,18 @@ export function Skills(): React.JSX.Element {
   return (
     <section
       id="skills"
-      className="py-20 sm:py-28"
+      className="py-16 sm:py-20 md:py-28"
       aria-labelledby="skills-title"
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeading
           id="skills-title"
-          sectionNumber="003.7 — Skills"
+          sectionNumber="004 — Skills"
           title="Skills & Tools"
           subtitle="Technologies I work with daily to build reliable, scalable software."
         />
 
-        <div className="mt-12 space-y-16">
+        <div className="mt-8 space-y-10 sm:mt-10 sm:space-y-12 md:mt-12 md:space-y-16">
           {SKILLS.map((category) => (
             <motion.div
               key={category.title}
@@ -50,22 +50,22 @@ export function Skills(): React.JSX.Element {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.1 }}
-              className="space-y-6"
+              className="space-y-4 sm:space-y-6"
             >
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10">
+                <div className="flex size-9 items-center justify-center rounded-lg bg-accent/10 sm:size-10">
                   <category.icon
-                    className="size-5 text-accent"
+                    className="size-4 text-accent sm:size-5"
                     aria-hidden="true"
                   />
                 </div>
-                <h3 className="font-heading text-lg font-bold text-heading">
+                <h3 className="font-heading text-base font-bold text-heading sm:text-lg">
                   {category.title}
                 </h3>
               </div>
 
               <div
-                className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4"
                 role="list"
                 aria-label={`${category.title} list`}
               >
@@ -79,17 +79,17 @@ export function Skills(): React.JSX.Element {
                       role="listitem"
                     >
                       <Card
-                        className="card-hover-glow h-full border-border-color bg-surface/50 backdrop-blur-md transition-all hover:border-accent/40"
+                        className="card-hover-glow h-full min-h-[52px] border-border-color bg-surface/50 backdrop-blur-md transition-all hover:border-accent/40"
                         aria-label={skill.name}
                       >
-                        <CardContent className="flex items-center gap-3 p-4">
-                          <div className="flex size-8 items-center justify-center rounded-lg bg-accent/5 transition-colors group-hover:bg-accent/10">
+                        <CardContent className="flex items-center gap-2.5 p-3 sm:gap-3 sm:p-4">
+                          <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent/5 transition-colors group-hover:bg-accent/10 sm:size-8">
                             <SkillIcon
-                              className="size-4 text-accent"
+                              className="size-3.5 text-accent sm:size-4"
                               aria-hidden="true"
                             />
                           </div>
-                          <span className="font-heading text-sm font-medium text-heading">
+                          <span className="truncate font-heading text-xs font-medium text-heading sm:text-sm">
                             {skill.name}
                           </span>
                         </CardContent>

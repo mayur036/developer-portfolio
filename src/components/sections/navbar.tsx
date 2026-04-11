@@ -54,7 +54,7 @@ export function Navbar(): React.JSX.Element {
         ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
       }}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-16 sm:px-6">
         {/* Logo */}
         <a
           href="#"
@@ -130,14 +130,14 @@ export function Navbar(): React.JSX.Element {
                 <ColorPicker />
               </div>
 
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-1">
                 {NAV_LINKS.map((link) => (
                   <li key={link.href}>
                     <a
                       href={link.href}
                       id={`nav-item-mobile-${link.href.replace('#', '')}`}
                       onClick={(e) => handleNavClick(e, link.href)}
-                      className="block rounded-lg px-4 py-3 text-sm font-medium text-body transition-colors hover:bg-accent/10 hover:text-accent"
+                      className="flex min-h-[44px] items-center rounded-lg px-4 text-sm font-medium text-body transition-colors hover:bg-accent/10 hover:text-accent"
                     >
                       {link.label}
                     </a>

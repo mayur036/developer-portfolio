@@ -39,7 +39,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         aria-label={`Project: ${project.title}`}
       >
         {/* Left: Image / Mockup */}
-        <div className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-accent/5 via-accent/3 to-transparent p-8 md:p-12">
+        <div className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-accent/5 via-accent/3 to-transparent p-4 sm:p-8 md:p-12">
           <div className="relative w-full">
             {/* Mockup frame */}
             <div className="overflow-hidden rounded-lg border border-border-color bg-background shadow-2xl">
@@ -66,7 +66,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         </div>
 
         {/* Right: Details */}
-        <CardContent className="flex flex-col justify-center p-6 sm:p-8 md:p-10">
+        <CardContent className="flex flex-col justify-center p-4 sm:p-6 md:p-8 lg:p-10">
           {/* Role badge */}
           <Badge
             variant="secondary"
@@ -87,14 +87,14 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
           {/* Tech stack */}
           <div
-            className="mb-6 flex flex-wrap gap-1.5"
+            className="mb-4 flex flex-wrap gap-1 sm:mb-6 sm:gap-1.5"
             aria-label="Technologies used"
           >
             {project.techStack.map((tech) => (
               <Badge
                 key={tech}
                 variant="outline"
-                className="border-border-color bg-surface-alt/50 px-3 py-1.5 text-xs font-medium text-body transition-colors hover:border-accent/40"
+                className="border-border-color bg-surface-alt/50 px-2 py-1 text-[11px] font-medium text-body transition-colors hover:border-accent/40 sm:px-3 sm:py-1.5 sm:text-xs"
               >
                 {tech}
               </Badge>
@@ -102,13 +102,13 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             {project.liveUrl && (
               <Tooltip>
                 <TooltipTrigger
                   render={
                     <Button
-                      className="gradient-btn h-10 rounded-full px-6 text-sm font-medium"
+                      className="gradient-btn h-11 w-full rounded-full px-6 text-sm font-medium sm:h-10 sm:w-auto"
                       aria-label={`Open ${project.title} live website`}
                       render={
                         <a
@@ -134,7 +134,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   render={
                     <Button
                       variant="outline"
-                      className="h-10 rounded-full border-border-color px-6 text-sm font-medium hover:border-accent hover:text-accent"
+                      className="h-11 w-full rounded-full border-border-color px-6 text-sm font-medium hover:border-accent hover:text-accent sm:h-10 sm:w-auto"
                       aria-label={`View ${project.title} source code on GitHub`}
                       render={
                         <a

@@ -97,7 +97,7 @@ export function Hero(): React.JSX.Element {
 
           {/* Name -- this is the LCP element, reduced animation delay */}
           <motion.h1
-            className="text-fluid-xl mt-6 font-heading font-bold tracking-tight text-heading"
+            className="text-fluid-xl mt-4 font-heading font-bold tracking-tight text-heading sm:mt-6"
             variants={itemVariants}
           >
             {PERSONAL.name}
@@ -106,7 +106,7 @@ export function Hero(): React.JSX.Element {
 
           {/* Tagline */}
           <motion.p
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-body sm:text-xl"
+            className="mt-4 max-w-2xl px-2 text-base leading-relaxed text-body sm:mt-6 sm:px-0 sm:text-lg md:text-xl"
             variants={itemVariants}
           >
             {PERSONAL.tagline}
@@ -114,7 +114,7 @@ export function Hero(): React.JSX.Element {
 
           {/* CTA Buttons */}
           <motion.div
-            className="mt-10 flex flex-wrap justify-center gap-4"
+            className="mt-8 flex w-full flex-col items-center gap-3 px-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4 sm:px-0"
             variants={itemVariants}
           >
             <Tooltip>
@@ -122,7 +122,7 @@ export function Hero(): React.JSX.Element {
                 render={
                   <Button
                     size="lg"
-                    className="gradient-btn h-12 rounded-full px-8 text-sm font-semibold sm:px-10"
+                    className="gradient-btn h-12 w-full rounded-full px-8 text-sm font-semibold sm:w-auto sm:px-10"
                     aria-label="View my featured projects"
                     onClick={() =>
                       document
@@ -146,7 +146,7 @@ export function Hero(): React.JSX.Element {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="h-12 rounded-full border-border-color px-8 text-sm font-semibold transition-all hover:border-accent hover:text-accent sm:px-10"
+                    className="h-12 w-full rounded-full border-border-color px-8 text-sm font-semibold transition-all hover:border-accent hover:text-accent sm:w-auto sm:px-10"
                     aria-label="View and download my resume"
                     render={
                       <a href={PERSONAL.resumeUrl}>
@@ -165,14 +165,14 @@ export function Hero(): React.JSX.Element {
 
           {/* Stats Row */}
           <motion.div
-            className="mt-16 flex flex-wrap justify-center gap-8 sm:gap-12"
+            className="mt-10 flex flex-wrap justify-center gap-6 sm:mt-16 sm:gap-8 md:gap-12"
             variants={itemVariants}
             aria-label="Key statistics"
           >
             {HERO_STATS.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className="flex flex-col items-center gap-2"
+                className="flex flex-col items-center gap-1 sm:gap-2"
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{
@@ -181,10 +181,10 @@ export function Hero(): React.JSX.Element {
                   ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
                 }}
               >
-                <span className="text-3xl font-bold text-heading sm:text-4xl">
+                <span className="text-2xl font-bold text-heading sm:text-3xl md:text-4xl">
                   {stat.value}
                 </span>
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-text sm:text-sm">
+                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-text sm:text-xs md:text-sm">
                   {stat.label}
                 </span>
               </motion.div>

@@ -15,13 +15,13 @@ export function Experience(): React.JSX.Element {
   return (
     <section
       id="experience"
-      className="bg-surface-alt/50 py-20 sm:py-28"
+      className="bg-surface-alt/50 py-16 sm:py-20 md:py-28"
       aria-labelledby="experience-title"
     >
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <SectionHeading
           id="experience-title"
-          sectionNumber="003.5 — Experience"
+          sectionNumber="003 — Experience"
           title="Where I've Been"
           subtitle="The teams and challenges that shaped my approach to building software."
         />
@@ -40,7 +40,7 @@ export function Experience(): React.JSX.Element {
               <motion.div
                 key={exp.id}
                 role="listitem"
-                className={`relative mb-12 flex last:mb-0 ${
+                className={`relative mb-8 flex last:mb-0 sm:mb-10 md:mb-12 ${
                   isLeft
                     ? 'md:justify-start md:pr-[calc(50%+2rem)]'
                     : 'md:justify-end md:pl-[calc(50%+2rem)]'
@@ -73,18 +73,18 @@ export function Experience(): React.JSX.Element {
 
                 {/* Content card */}
                 <div
-                  className="card-hover-glow ml-10 w-full rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-6 md:ml-0"
+                  className="card-hover-glow ml-8 w-full rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-4 sm:ml-10 sm:p-5 md:ml-0 md:p-6"
                   aria-label={`${exp.role} at ${exp.company}`}
                 >
                   <div className="mb-1 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                    <h3 className="font-heading text-base font-semibold text-heading">
+                    <h3 className="font-heading text-sm font-semibold text-heading sm:text-base">
                       {exp.role}
                     </h3>
-                    <span className="font-mono text-xs text-accent">
+                    <span className="font-mono text-[11px] text-accent sm:text-xs">
                       {exp.startDate} &mdash; {exp.endDate}
                     </span>
                   </div>
-                  <p className="mb-3 text-sm font-medium text-muted-text">
+                  <p className="mb-3 text-xs font-medium text-muted-text sm:text-sm">
                     {exp.company}
                   </p>
 
@@ -95,10 +95,10 @@ export function Experience(): React.JSX.Element {
                     {exp.bullets.map((bullet, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-2 text-sm leading-relaxed text-body"
+                        className="flex items-start gap-2 text-xs leading-relaxed text-body sm:text-sm"
                       >
                         <span
-                          className="mt-2 size-1 shrink-0 rounded-full bg-accent"
+                          className="mt-1.5 size-1 shrink-0 rounded-full bg-accent sm:mt-2"
                           aria-hidden="true"
                         />
                         {bullet}
@@ -116,7 +116,7 @@ export function Experience(): React.JSX.Element {
                           render={
                             <Badge
                               variant="secondary"
-                              className="border border-border-color bg-surface-alt/50 px-3 py-1.5 text-xs font-medium text-body transition-all hover:bg-accent/10 hover:text-accent"
+                              className="border border-border-color bg-surface-alt/50 px-2.5 py-1 text-[11px] font-medium text-body transition-all hover:bg-accent/10 hover:text-accent sm:px-3 sm:py-1.5 sm:text-xs"
                             >
                               {tag}
                             </Badge>

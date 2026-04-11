@@ -10,13 +10,13 @@ export function Credentials(): React.JSX.Element {
   return (
     <section
       id="credentials"
-      className="py-20 sm:py-28"
+      className="py-16 sm:py-20 md:py-28"
       aria-labelledby="credentials-title"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           id="credentials-title"
-          sectionNumber="004 — Credentials"
+          sectionNumber="006 — Credentials"
           title="Certifications & Achievements"
           subtitle="Recognition and continuous learning milestones."
         />
@@ -40,7 +40,7 @@ export function Credentials(): React.JSX.Element {
               <motion.div
                 key={cred.id}
                 role="listitem"
-                className="card-hover-glow w-80 shrink-0 rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-6 sm:w-96"
+                className="card-hover-glow w-[85vw] max-w-[340px] shrink-0 rounded-xl border border-border-color bg-surface/50 p-5 backdrop-blur-md sm:w-80 sm:p-6 md:w-96"
                 aria-label={`${cred.title} by ${cred.issuer}`}
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -55,11 +55,14 @@ export function Credentials(): React.JSX.Element {
                   transition: { duration: 0.3, ease: 'easeOut' },
                 }}
               >
-                <div className="mb-4 flex items-start justify-between">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10">
-                    <Award className="size-5 text-accent" aria-hidden="true" />
+                <div className="mb-3 flex items-start justify-between sm:mb-4">
+                  <div className="flex size-9 items-center justify-center rounded-lg bg-accent/10 sm:size-10">
+                    <Award
+                      className="size-4 text-accent sm:size-5"
+                      aria-hidden="true"
+                    />
                   </div>
-                  <span className="font-mono text-xs text-muted-text">
+                  <span className="font-mono text-[11px] text-muted-text sm:text-xs">
                     {cred.date}
                   </span>
                 </div>
@@ -67,14 +70,16 @@ export function Credentials(): React.JSX.Element {
                 <h3 className="mb-2 font-heading text-sm font-semibold leading-snug text-heading">
                   {cred.title}
                 </h3>
-                <p className="mb-4 text-xs text-muted-text">{cred.issuer}</p>
+                <p className="mb-4 text-[11px] text-muted-text sm:text-xs">
+                  {cred.issuer}
+                </p>
 
                 {cred.url && (
                   <a
                     href={cred.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-accent transition-colors hover:text-accent/80"
+                    className="inline-flex min-h-[32px] items-center gap-1.5 text-xs font-medium text-accent transition-colors hover:text-accent/80"
                     aria-label={`View certificate for ${cred.title}`}
                   >
                     <ExternalLink className="size-3" aria-hidden="true" />
