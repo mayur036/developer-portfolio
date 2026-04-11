@@ -53,13 +53,13 @@ export function About(): React.JSX.Element {
   return (
     <section
       id="about"
-      className="py-20 sm:py-28"
+      className="py-16 sm:py-20 md:py-28"
       aria-labelledby="about-title"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           id="about-title"
-          sectionNumber="002 — About"
+          sectionNumber="001 — About"
           title="Get to Know Me"
           subtitle="A developer who cares about craft, performance, and the people who use the things I build."
         />
@@ -179,7 +179,7 @@ export function About(): React.JSX.Element {
             Beyond Code
           </motion.h3>
           <div
-            className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5"
+            className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-5"
             role="list"
             aria-labelledby="beyond-code-title"
           >
@@ -191,13 +191,13 @@ export function About(): React.JSX.Element {
                     render={
                       <motion.div
                         role="listitem"
-                        className="card-hover-glow flex flex-col items-center gap-2 rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-4 text-center transition-all"
+                        className="card-hover-glow flex min-h-[44px] flex-col items-center gap-1.5 rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-3 text-center transition-all sm:gap-2 sm:p-4"
                         variants={itemVariants}
                         whileHover={{ y: -5, borderColor: 'var(--accent)' }}
                         aria-label={`Hobby: ${hobby.name}`}
                       >
-                        <HobbyIcon className="size-6 text-accent" />
-                        <span className="text-xs font-medium text-body">
+                        <HobbyIcon className="size-5 text-accent sm:size-6" />
+                        <span className="text-[11px] font-medium text-body sm:text-xs">
                           {hobby.name}
                         </span>
                       </motion.div>
@@ -228,7 +228,7 @@ export function About(): React.JSX.Element {
             Tech Stack
           </motion.h3>
           <div
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap gap-1.5 sm:gap-2"
             role="list"
             aria-labelledby="tech-stack-title"
           >
@@ -238,7 +238,7 @@ export function About(): React.JSX.Element {
                   key={skill.name}
                   variant="outline"
                   role="listitem"
-                  className="rounded-full border border-border-color bg-surface/50 backdrop-blur-md px-4 py-3 text-[13px] font-medium text-body transition-all hover:border-accent hover:text-accent hover:bg-accent/5 hover:scale-105"
+                  className="rounded-full border border-border-color bg-surface/50 px-3 py-2 text-xs font-medium text-body backdrop-blur-md transition-all hover:scale-105 hover:border-accent hover:bg-accent/5 hover:text-accent sm:px-4 sm:py-3 sm:text-[13px]"
                   aria-label={`Skill: ${skill.name}`}
                 >
                   {skill.name}

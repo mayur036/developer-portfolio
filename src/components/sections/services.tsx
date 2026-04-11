@@ -37,19 +37,19 @@ export function Services(): React.JSX.Element {
   return (
     <section
       id="services"
-      className="py-20 sm:py-28"
+      className="py-16 sm:py-20 md:py-28"
       aria-labelledby="services-title"
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <SectionHeading
           id="services-title"
-          sectionNumber="004 — Services"
+          sectionNumber="005 — Services"
           title="What I Offer"
           subtitle="High-end business solutions tailored to your needs — from idea to scalable product."
         />
 
         <motion.div
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -65,21 +65,21 @@ export function Services(): React.JSX.Element {
                 variants={itemVariants}
                 whileHover={cardHover}
                 role="listitem"
-                className="group card-hover-glow rounded-xl border border-border-color bg-surface/50 backdrop-blur-md p-6"
+                className="group card-hover-glow rounded-xl border border-border-color bg-surface/50 p-5 backdrop-blur-md sm:p-6"
                 aria-label={`Service: ${service.title}`}
               >
-                <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-accent/10 transition-colors group-hover:bg-accent/20">
+                <div className="mb-4 flex size-11 items-center justify-center rounded-lg bg-accent/10 transition-colors group-hover:bg-accent/20 sm:size-12">
                   <ServiceIcon
-                    className="size-6 text-accent"
+                    className="size-5 text-accent sm:size-6"
                     aria-hidden="true"
                   />
                 </div>
 
-                <h3 className="mb-2 font-heading text-base font-semibold text-heading">
+                <h3 className="mb-2 font-heading text-sm font-semibold text-heading sm:text-base">
                   {service.title}
                 </h3>
 
-                <p className="mb-5 text-sm leading-relaxed text-body">
+                <p className="mb-4 text-xs leading-relaxed text-body sm:mb-5 sm:text-sm">
                   {service.description}
                 </p>
 
@@ -90,7 +90,7 @@ export function Services(): React.JSX.Element {
                   {service.highlights.map((highlight) => (
                     <li
                       key={highlight}
-                      className="flex items-center gap-2 text-xs text-muted-text"
+                      className="flex items-center gap-2 text-[11px] text-muted-text sm:text-xs"
                     >
                       <ArrowRight
                         className="size-3 shrink-0 text-accent"

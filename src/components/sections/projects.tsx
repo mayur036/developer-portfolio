@@ -9,13 +9,13 @@ export function Projects(): React.JSX.Element {
   return (
     <section
       id="projects"
-      className="py-20 sm:py-28"
+      className="py-16 sm:py-20 md:py-28"
       aria-labelledby="projects-title"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           id="projects-title"
-          sectionNumber="003 — Work"
+          sectionNumber="002 — Work"
           title="Featured Projects"
           subtitle="A selection of problems I have enjoyed solving."
         />

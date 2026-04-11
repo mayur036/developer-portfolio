@@ -18,21 +18,21 @@ export function Contact(): React.JSX.Element {
   return (
     <section
       id="contact"
-      className="py-20 sm:py-28"
+      className="py-16 sm:py-20 md:py-28"
       aria-labelledby="contact-title"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <SectionHeading
           id="contact-title"
-          sectionNumber="005 — Contact"
+          sectionNumber="007 — Contact"
           title="Let's Build Something Together"
           subtitle="I'm always open to discussing new projects, creative ideas, or opportunities."
         />
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
           {/* Left: Contact Form */}
           <motion.div
-            className="glow-border rounded-xl bg-surface/50 backdrop-blur-md p-6 sm:p-8"
+            className="glow-border rounded-xl bg-surface/50 p-5 backdrop-blur-md sm:p-6 md:p-8"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -43,17 +43,17 @@ export function Contact(): React.JSX.Element {
           >
             <h3
               id="form-title"
-              className="mb-8 font-heading text-base font-semibold text-heading pt-2"
+              className="mb-6 pt-1 font-heading text-base font-semibold text-heading sm:mb-8 sm:pt-2"
             >
               Send a Message
             </h3>
             <form
-              className="space-y-6 pt-2"
+              className="space-y-4 pt-1 sm:space-y-6 sm:pt-2"
               id="contact-form"
               aria-labelledby="form-title"
               onSubmit={(e) => e.preventDefault()}
             >
-              <div className="grid gap-6 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div className="space-y-2">
                   <label
                     htmlFor="form-input-name"
@@ -128,7 +128,7 @@ export function Contact(): React.JSX.Element {
                 id="cta-contact-submit"
                 size="lg"
                 aria-label="Send your message"
-                className="gradient-btn mt-4 flex w-full h-14 items-center justify-center gap-2 rounded-xl px-6 text-sm font-semibold"
+                className="gradient-btn mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl px-6 text-sm font-semibold sm:mt-4 sm:h-14"
               >
                 <Send className="size-4" aria-hidden="true" />
                 Send Message
@@ -138,7 +138,7 @@ export function Contact(): React.JSX.Element {
 
           {/* Right: Social Grid + Status */}
           <motion.div
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -165,7 +165,7 @@ export function Contact(): React.JSX.Element {
 
             {/* Social grid */}
             <div
-              className="grid gap-3 sm:grid-cols-2"
+              className="grid gap-2.5 sm:grid-cols-2 sm:gap-3"
               role="list"
               aria-label="Social media links"
             >
